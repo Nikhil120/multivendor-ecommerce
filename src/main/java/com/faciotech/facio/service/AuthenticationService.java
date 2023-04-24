@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -66,7 +67,6 @@ public class AuthenticationService {
 	}
 
 	public AuthenticationResponse authenticate(AuthenticationRequest request) {
-		log.info("Testing Logging");
 		authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 		User user = repository.findByEmail(request.getEmail()).orElseThrow();
@@ -84,7 +84,7 @@ public class AuthenticationService {
 	}
 
 	private void revokeAllUserTokens(User user) {
-		var validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId());
+		List<Token> validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId());
 		if (validUserTokens.isEmpty())
 			return;
 		validUserTokens.forEach(token -> {

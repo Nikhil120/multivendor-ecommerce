@@ -146,7 +146,8 @@ public class AuthenticationService {
 	public boolean verify(String email, String verificationCode) {
 		Optional<User> user = userRepository.findByEmail(email);
 
-		if (user.isEmpty() || !user.get().getVerificationCode().equals(verificationCode)) {
+		if (user.isEmpty() || user.get().getVerificationCode() == null
+				|| !user.get().getVerificationCode().equals(verificationCode)) {
 			return false;
 		} else {
 			User user1 = user.get();

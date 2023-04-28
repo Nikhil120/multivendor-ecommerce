@@ -10,6 +10,7 @@ import com.faciotech.facio.enums.BusinessTypeEnum;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
@@ -22,7 +23,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@jakarta.persistence.Entity
+@Entity
 @Table(name = "business")
 @Data
 @NoArgsConstructor
@@ -38,7 +39,7 @@ public class Business {
 	@Column(nullable = false, length = 40)
 	private String businessName;
 
-	@Column(nullable = false, unique = true, length = 45)
+	@Column(nullable = false, length = 45)
 	private String email;
 	
 	@Column
@@ -63,20 +64,23 @@ public class Business {
 	@OneToMany(mappedBy = "business")
 	private Set<User> users;
 
+	@Column
+	private String description;
+	
 	@Column(nullable = false)
-	private Boolean isEmailVerified;
+	private Boolean isEmailVerified = false;
 
 	@Column(nullable = false)
-	private Boolean isPhone1Verified;
+	private Boolean isPhone1Verified = false;
 
 	@Column(nullable = false)
-	private Boolean isPhone2Verified;
+	private Boolean isPhone2Verified = false;
 
 	@Column(nullable = false)
-	private Boolean isActive;
+	private Boolean isActive = true;
 
 	@Column(nullable = false)
-	private Boolean isVerified;
+	private Boolean isVerified = false;
 
 	@CreationTimestamp
 	private LocalDateTime createdAt;

@@ -78,9 +78,9 @@ public class User implements UserDetails {
 	@JoinColumn(name = "business_id")
 	private Business business;
 
-	@ManyToMany
-	@JoinTable(name = "business_users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-	private Set<Role> roles = new HashSet<>();
+//	@ManyToMany
+//	@JoinTable(name = "business_users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+//	private Set<Role> roles = new HashSet<>();
 
 	@CreationTimestamp
 	private LocalDateTime createdAt;

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.faciotech.facio.service.AuthenticationService;
+import com.faciotech.facio.service.BusinessService;
 import com.faciotech.facio.util.AuthenticationRequest;
 import com.faciotech.facio.util.AuthenticationResponse;
 import com.faciotech.facio.util.RegisterRequest;
@@ -32,6 +33,7 @@ import java.io.UnsupportedEncodingException;
 public class AuthenticationController {
 
 	private final AuthenticationService authenticationService;
+	private final BusinessService businessService;
 
 	@PostMapping("/register")
 	public ResponseEntity<String> register(@RequestBody RegisterRequest request)
@@ -60,6 +62,7 @@ public class AuthenticationController {
 	@GetMapping("/verify")
 	public String verifyUser(@Param("email") String email, @Param("code") String code) {
 		if (authenticationService.verify(email, code)) {
+			businessService.addDefaultBusiness(email);
 			return "verify_success";
 		} else {
 			return "verify_fail";

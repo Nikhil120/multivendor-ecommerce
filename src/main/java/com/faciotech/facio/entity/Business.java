@@ -3,6 +3,9 @@ package com.faciotech.facio.entity;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import com.faciotech.facio.enums.BusinessTypeEnum;
 
 import jakarta.persistence.CascadeType;
@@ -75,9 +78,9 @@ public class Business {
 	@Column(nullable = false)
 	private Boolean isVerified;
 
-	@Column(nullable = false)
+	@CreationTimestamp
 	private LocalDateTime createdAt;
 
-	@Column(nullable = false)
+	@UpdateTimestamp
 	private LocalDateTime updatedAt;
 }

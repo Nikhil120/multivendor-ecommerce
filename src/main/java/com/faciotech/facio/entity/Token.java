@@ -1,5 +1,10 @@
 package com.faciotech.facio.entity;
 
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import com.faciotech.facio.enums.TokenType;
 
 import jakarta.persistence.Column;
@@ -23,21 +28,27 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Token {
 
-  @Id
-  @GeneratedValue
-  public Integer id;
+	@Id
+	@GeneratedValue
+	public Integer id;
 
-  @Column(unique = true)
-  public String token;
+	@Column(unique = true)
+	public String token;
 
-  @Enumerated(EnumType.STRING)
-  public TokenType tokenType = TokenType.BEARER;
+	@Enumerated(EnumType.STRING)
+	public TokenType tokenType = TokenType.BEARER;
 
-  public boolean revoked;
+	public boolean revoked;
 
-  public boolean expired;
+	public boolean expired;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id")
-  public User user;
+	@CreationTimestamp
+	private LocalDateTime createdAt;
+
+	@UpdateTimestamp
+	private LocalDateTime updatedAt;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	public User user;
 }

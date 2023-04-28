@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/business")
+@RequestMapping("/api/v1/business")
 @RequiredArgsConstructor
 public class BusinessController {
 

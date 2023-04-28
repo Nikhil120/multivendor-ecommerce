@@ -24,6 +24,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -57,10 +59,10 @@ public class User implements UserDetails {
 	@Column
 	private String phoneNumber;
 
-	@Column(nullable = false)
+	@Column
 	private Boolean isEmailVerified;
 
-	@Column(nullable = false)
+	@Column
 	private Boolean isPhoneVerified;
 
 	@Column
@@ -69,7 +71,7 @@ public class User implements UserDetails {
 	@Column(nullable = false)
 	private Boolean isVerified;
 
-	@Column(nullable = false)
+	@Column
 	private Boolean isActive;
 
 	@ManyToOne
@@ -80,10 +82,10 @@ public class User implements UserDetails {
 	@JoinTable(name = "business_users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
 
-	@Column(nullable = false)
+	@CreationTimestamp
 	private LocalDateTime createdAt;
 
-	@Column(nullable = false)
+	@UpdateTimestamp
 	private LocalDateTime updatedAt;
 
 	@Enumerated(EnumType.STRING)

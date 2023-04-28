@@ -44,12 +44,12 @@ public class AuthenticationService {
 	private final JwtService jwtService;
 	private final AuthenticationManager authenticationManager;
 	private final JavaMailSender mailSender;
-	
+
 	public boolean register(RegisterRequest request, String siteURL)
 			throws UnsupportedEncodingException, MessagingException {
 		byte[] array = new byte[7];
 		new Random().nextBytes(array);
-		String randomCode = new String(array, Charset.forName("UTF-8"));
+		String randomCode = generateVeificationCode();
 
 		User user = User.builder().firstname(request.getFirstname()).lastname(request.getLastname())
 				.email(request.getEmail()).password(passwordEncoder.encode(request.getPassword())).appRole(AppRole.USER)
@@ -157,5 +157,16 @@ public class AuthenticationService {
 			return true;
 		}
 
+	}
+
+	protected String generateVeificationCode() {
+		String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+		StringBuilder code = new StringBuilder();
+		Random rnd = new Random();
+		while (code.length() < 8) { // length of the random string.
+			int index = (int) (rnd.nextFloat() * SALTCHARS.length());
+			code.append(SALTCHARS.charAt(index));
+		}
+		return code.toString();
 	}
 }

@@ -1,5 +1,5 @@
 package com.faciotech.facio.enums;
 
-public enum AppRole {
+public enum Role {
 	USER, ADMIN
 }

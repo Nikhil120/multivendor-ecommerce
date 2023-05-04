@@ -2,7 +2,7 @@ package com.faciotech.facio.service;
 
 import com.faciotech.facio.entity.Token;
 import com.faciotech.facio.entity.User;
-import com.faciotech.facio.enums.AppRole;
+import com.faciotech.facio.enums.Role;
 import com.faciotech.facio.enums.TokenType;
 import com.faciotech.facio.repository.TokenRepository;
 import com.faciotech.facio.repository.UserRepository;
@@ -28,7 +28,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -52,7 +51,7 @@ public class AuthenticationService {
 		String randomCode = generateVeificationCode();
 
 		User user = User.builder().firstname(request.getFirstname()).lastname(request.getLastname())
-				.email(request.getEmail()).password(passwordEncoder.encode(request.getPassword())).appRole(AppRole.USER)
+				.email(request.getEmail()).password(passwordEncoder.encode(request.getPassword())).role(Role.USER)
 				.verificationCode(randomCode).isVerified(false).build();
 
 		Optional<User> existingUser = userRepository.findByEmail(request.getEmail());

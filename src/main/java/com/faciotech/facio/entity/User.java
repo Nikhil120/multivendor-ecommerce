@@ -26,7 +26,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.faciotech.facio.enums.AppRole;
+import com.faciotech.facio.enums.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -77,10 +77,6 @@ public class User implements UserDetails {
 	@JsonIgnore
 	private Business business;
 
-//	@ManyToMany
-//	@JoinTable(name = "business_users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-//	private Set<Role> roles = new HashSet<>();
-
 	@CreationTimestamp
 	private LocalDateTime createdAt;
 
@@ -88,7 +84,7 @@ public class User implements UserDetails {
 	private LocalDateTime updatedAt;
 
 	@Enumerated(EnumType.STRING)
-	private AppRole appRole;
+	private Role role;
 
 	@OneToMany(mappedBy = "user")
 	@JsonIgnore
@@ -96,7 +92,7 @@ public class User implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return List.of(new SimpleGrantedAuthority(appRole.name()));
+		return List.of(new SimpleGrantedAuthority(role.name()));
 	}
 
 	@Override

@@ -29,15 +29,10 @@ public class DemoController {
 
 
 	@GetMapping("/data")
-	public ResponseEntity<Business> sayHello() {
-//		System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
-//		User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
-//				.orElseThrow();
+	public ResponseEntity<Business> sayHello(HttpServletRequest request, HttpServletResponse response) {
+		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
-		User user = userRepository.findByEmail("testing@yopmail.com").orElseThrow();
-		Business business = businessService.getBusinessDetails(user);
-		System.out.println(business.getAddress().getCity());
-
+		Business business = businessService.getBusinessDetails(email);
 		
 		return new ResponseEntity<Business>(business, HttpStatus.OK);
 	}

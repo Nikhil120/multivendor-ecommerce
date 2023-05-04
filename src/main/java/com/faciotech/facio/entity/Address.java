@@ -9,6 +9,8 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -45,6 +47,7 @@ public class Address {
 	private String googleMapLink;
 
 	@OneToOne(mappedBy = "address")
+	@JsonIgnore
 	private Business business;
 
 	@CreationTimestamp

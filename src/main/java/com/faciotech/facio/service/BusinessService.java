@@ -54,14 +54,36 @@ public class BusinessService {
 
 		businessRespository.save(business);
 	}
-	
-	public Business getBusinessDetails(User user) {
+
+	public Business getBusinessDetails(String email) {
+		User user = userRepository.findByEmail(email).orElseThrow();
 		return user.getBusiness();
 	}
 
-	public Business updateBusiness(Business business) {
-		// TODO Auto-generated method stub
-		return null;
+	public Business updateBusiness(String email, Business business) {
+		User user = userRepository.findByEmail(email).orElseThrow();
+		Address address = business.getAddress();
+		Business myBusiness = user.getBusiness();
+
+		myBusiness.setBusinessName(business.getBusinessName());
+		myBusiness.setDescription(business.getDescription());
+		myBusiness.setEmail(business.getEmail());
+		myBusiness.setPhoneNumber1(business.getPhoneNumber1());
+		myBusiness.setPhoneNumber2(business.getPhoneNumber2());
+		
+		Address myAddress = myBusiness.getAddress();
+		myAddress.setAddressline(address.getAddressline());
+		myAddress.setPinCode(address.getPinCode());
+		myAddress.setCity(address.getCity());
+		myAddress.setState(address.getState());
+		myAddress.setCountry(address.getCountry());
+		myAddress.setGoogleMapLink(address.getGoogleMapLink());
+
+		addressRespository.save(myAddress);
+
+		businessRespository.save(myBusiness);
+
+		return business;
 	}
 
 	public void addUserToBusiness(Long businessId, User user) {

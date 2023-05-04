@@ -7,17 +7,13 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,6 +27,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.faciotech.facio.enums.AppRole;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Data
 @Builder
@@ -76,6 +74,7 @@ public class User implements UserDetails {
 
 	@ManyToOne
 	@JoinColumn(name = "business_id")
+	@JsonIgnore
 	private Business business;
 
 //	@ManyToMany
@@ -92,6 +91,7 @@ public class User implements UserDetails {
 	private AppRole appRole;
 
 	@OneToMany(mappedBy = "user")
+	@JsonIgnore
 	private List<Token> tokens;
 
 	@Override

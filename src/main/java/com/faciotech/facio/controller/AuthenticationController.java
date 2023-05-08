@@ -4,12 +4,10 @@ import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.faciotech.facio.service.AuthenticationService;
 import com.faciotech.facio.service.BusinessService;
 import com.faciotech.facio.util.AuthenticationRequest;
-import com.faciotech.facio.util.AuthenticationResponse;
 import com.faciotech.facio.util.RegisterRequest;
 
 import java.io.IOException;

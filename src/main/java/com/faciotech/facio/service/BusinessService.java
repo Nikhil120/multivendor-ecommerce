@@ -1,9 +1,6 @@
 package com.faciotech.facio.service;
 
-import java.util.HashSet;
-import java.util.Optional;
 import java.util.Random;
-import java.util.Set;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,8 +30,8 @@ public class BusinessService {
 		User user = userRepository.findByEmail(email).orElseThrow();
 
 		Business business = new Business();
-		business.setBusinessId(generateBusinessId());
-		business.setBusinessName("My Business Name");
+		business.setBusinessCode(generateBusinessId());
+		business.setName("My Business Name");
 		business.setDescription("About my business!!!");
 		business.setBusinessType(BusinessTypeEnum.DISTRIBUTOR);
 		business.setEmail("mybusiness@mail.com");
@@ -53,6 +50,7 @@ public class BusinessService {
 		addressRespository.save(address);
 
 		businessRespository.save(business);
+		userRepository.save(user);
 	}
 
 	public Business getBusinessDetails(String email) {
@@ -65,12 +63,12 @@ public class BusinessService {
 		Address address = business.getAddress();
 		Business myBusiness = user.getBusiness();
 
-		myBusiness.setBusinessName(business.getBusinessName());
+		myBusiness.setName(business.getName());
 		myBusiness.setDescription(business.getDescription());
 		myBusiness.setEmail(business.getEmail());
 		myBusiness.setPhoneNumber1(business.getPhoneNumber1());
 		myBusiness.setPhoneNumber2(business.getPhoneNumber2());
-		
+
 		Address myAddress = myBusiness.getAddress();
 		myAddress.setAddressline(address.getAddressline());
 		myAddress.setPinCode(address.getPinCode());

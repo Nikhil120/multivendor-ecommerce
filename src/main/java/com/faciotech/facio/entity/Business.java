@@ -8,7 +8,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import com.faciotech.facio.enums.BusinessTypeEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -35,16 +34,16 @@ public class Business {
 	@Id
 	@GeneratedValue
 	private Integer id;
-	
+
 	@Column(nullable = false, unique = true, length = 30)
-	private String businessId;
+	private String businessCode;
 
 	@Column(nullable = false, length = 40)
-	private String businessName;
+	private String name;
 
 	@Column(nullable = false, length = 45)
 	private String email;
-	
+
 	@Column
 	private String phoneNumber1;
 
@@ -68,9 +67,17 @@ public class Business {
 	@JsonIgnore
 	private Set<User> users;
 
+	@OneToMany(mappedBy = "business")
+	@JsonIgnore
+	private Set<Category> categories;
+
+	@OneToMany(mappedBy = "business")
+	@JsonIgnore
+	private Set<Product> products;
+
 	@Column
 	private String description;
-	
+
 	@Column(nullable = false)
 	private Boolean isEmailVerified = false;
 

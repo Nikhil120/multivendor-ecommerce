@@ -7,7 +7,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,17 +21,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "product")
+@Table(name = "product_variant")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
+public class ProductVariant {
 	@Id
 	@GeneratedValue
 	private Integer id;
 
 	@Column(nullable = false, unique = true, length = 30)
-	private String productCode;
+	private String sku;
 
 	@Column(nullable = false, length = 40)
 	private String name;
@@ -47,36 +46,17 @@ public class Product {
 	private double costPrice = 0.0;
 
 	@ManyToOne
-	@JoinColumn(name = "category_id")
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-	private Category category;
-
-	@ManyToOne
-	@JoinColumn(name = "business_id")
+	@JoinColumn(name = "product_id")
 	@JsonIgnore
-	private Business business;
+	private Product product;
 
-	@OneToMany(mappedBy = "product")
-	@JsonIgnore
-	private Set<ProductVariant> productVariants;
-
-	@OneToMany(mappedBy = "product")
+	@OneToMany(mappedBy = "productVariant")
 	@JsonIgnore
 	private Set<ProductVariantOption> productVariantOptions;
 
-	@OneToMany(mappedBy = "product")
-	@JsonIgnore
-	private Set<ProductOption> productOptions;
-
-	@OneToMany(mappedBy = "product")
+	@OneToMany(mappedBy = "productVariant")
 	@JsonIgnore
 	private Set<ProductImage> productImages;
-
-	@Column
-	private boolean haveProductVariant = false;
-
-	@Column
-	private boolean isActive = true;
 
 	@CreationTimestamp
 	private LocalDateTime createdAt;

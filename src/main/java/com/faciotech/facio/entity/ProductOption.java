@@ -1,12 +1,14 @@
 package com.faciotech.facio.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -43,8 +45,9 @@ public class ProductOption {
 	private Set<ProductVariantOption> productVariantOptions;
 
 	@OneToMany(mappedBy = "productOption")
-	@JsonIgnore
-	private Set<ProductOptionValue> productOptionValues;
+//	@JsonIgnore
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+	private List<ProductOptionValue> productOptionValues;
 
 	@CreationTimestamp
 	private LocalDateTime createdAt;

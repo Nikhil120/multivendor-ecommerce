@@ -1,6 +1,7 @@
 package com.faciotech.facio.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -65,8 +66,9 @@ public class Product {
 	private Set<ProductVariantOption> productVariantOptions;
 
 	@OneToMany(mappedBy = "product")
-	@JsonIgnore
-	private Set<ProductOption> productOptions;
+//	@JsonIgnore
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+	private List<ProductOption> productOptions;
 
 	@OneToMany(mappedBy = "product")
 	@JsonIgnore

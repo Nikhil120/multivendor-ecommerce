@@ -12,10 +12,14 @@ import com.faciotech.facio.entity.Address;
 import com.faciotech.facio.entity.Business;
 import com.faciotech.facio.entity.Category;
 import com.faciotech.facio.entity.Product;
+import com.faciotech.facio.entity.ProductOption;
+import com.faciotech.facio.entity.ProductOptionValue;
 import com.faciotech.facio.entity.User;
 import com.faciotech.facio.enums.BusinessTypeEnum;
 import com.faciotech.facio.repository.AddressRespository;
 import com.faciotech.facio.repository.BusinessRespository;
+import com.faciotech.facio.repository.ProductOptionRespository;
+import com.faciotech.facio.repository.ProductOptionValueRespository;
 import com.faciotech.facio.repository.ProductRespository;
 import com.faciotech.facio.repository.UserRepository;
 
@@ -29,6 +33,8 @@ import lombok.extern.slf4j.Slf4j;
 public class ProductService {
 	private final UserRepository userRepository;
 	private final ProductRespository productRespository;
+	private final ProductOptionRespository productOptionRespository;
+	private final ProductOptionValueRespository productOptionValueRespository;
 
 	public void addProduct(String email, Product product) {
 		User user = userRepository.findByEmail(email).get();
@@ -38,6 +44,16 @@ public class ProductService {
 		product.setBusiness(business);
 
 		productRespository.save(product);
+		
+		for (ProductOption productOption : product.getProductOptions()) {
+			productOption.setProduct(product);
+			productOptionRespository.save(productOption);
+			
+			for (ProductOptionValue productOptionValue : productOption.getProductOptionValues()) {
+				productOptionValue.setProductOption(productOption);
+				productOptionValueRespository.save(productOptionValue);
+			}
+		}
 	}
 
 	public Product getProductDetails(String email, int productId) {

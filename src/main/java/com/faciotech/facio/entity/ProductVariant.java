@@ -7,7 +7,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,7 +32,7 @@ public class ProductVariant {
 	@GeneratedValue
 	private Integer id;
 
-	@Column(nullable = false, unique = true, length = 30)
+	@Column(nullable = true, unique = true, length = 30)
 	private String sku;
 
 	@Column(nullable = false, length = 40)
@@ -50,11 +52,11 @@ public class ProductVariant {
 	@JsonIgnore
 	private Product product;
 
-	@OneToMany(mappedBy = "productVariant")
-	@JsonIgnore
+	@OneToMany(mappedBy = "productVariant", cascade = CascadeType.REMOVE)
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private Set<ProductVariantOption> productVariantOptions;
 
-	@OneToMany(mappedBy = "productVariant")
+	@OneToMany(mappedBy = "productVariant", cascade = CascadeType.DETACH)
 	@JsonIgnore
 	private Set<ProductImage> productImages;
 

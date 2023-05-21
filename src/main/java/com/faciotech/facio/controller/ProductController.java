@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.faciotech.facio.entity.Category;
 import com.faciotech.facio.entity.Product;
+import com.faciotech.facio.entity.ProductOption;
 import com.faciotech.facio.service.ProductService;
 
 import lombok.RequiredArgsConstructor;
@@ -26,17 +27,17 @@ import lombok.RequiredArgsConstructor;
 public class ProductController {
 	private final ProductService productService;
 
-	@PostMapping("/add-product")
-	public ResponseEntity<Product> addCategory(@RequestBody Product product) {
+	@PostMapping
+	public ResponseEntity<Product> addProduct(@RequestBody Product product) {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 		productService.addProduct(email, product);
 		return new ResponseEntity<Product>(product, HttpStatus.OK);
 	}
 
-	@GetMapping("/{id}")
-	public ResponseEntity<Product> getProductDetails(@PathVariable("id") Integer id) {
+	@GetMapping("/{product_id}")
+	public ResponseEntity<Product> getProductDetails(@PathVariable("product_id") Integer productId) {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
-		Product product = productService.getProductDetails(email, id);
+		Product product = productService.getProductDetails(email, productId);
 
 		if (product == null) {
 			return new ResponseEntity<Product>(product, HttpStatus.NOT_FOUND);
@@ -45,7 +46,7 @@ public class ProductController {
 		return new ResponseEntity<Product>(product, HttpStatus.OK);
 	}
 
-	@GetMapping
+	@GetMapping("/all")
 	public ResponseEntity<HashMap<String, Object>> getAllProduct() {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 		List<Product> productList = productService.getAllProducts(email);
@@ -54,5 +55,21 @@ public class ProductController {
 		data.put("count", productList.size());
 		data.put("data", productList);
 		return new ResponseEntity<HashMap<String, Object>>(data, HttpStatus.OK);
+	}
+
+	@PostMapping("{product_id}/options")
+	public ResponseEntity<String> addProductOption(@PathVariable("product_id") Integer productId,
+			@RequestBody ProductOption productOption) {
+		String email = SecurityContextHolder.getContext().getAuthentication().getName();
+		productService.addProductOptions(email, productId, productOption);
+		return ResponseEntity.ok("Product option added successfully.");
+	}
+
+	@PostMapping("{product_id}/options/{option_id}")
+	public ResponseEntity<String> updateProductOption(@PathVariable("product_id") Integer productId,
+			@PathVariable("option_id") Integer optionId, @RequestBody ProductOption productOption) {
+		String email = SecurityContextHolder.getContext().getAuthentication().getName();
+		productService.updateProductOption(email, productId, optionId, productOption);
+		return ResponseEntity.ok("Product option updated successfully.");
 	}
 }

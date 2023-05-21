@@ -1,5 +1,6 @@
 package com.faciotech.facio.service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -14,6 +15,8 @@ import com.faciotech.facio.entity.Category;
 import com.faciotech.facio.entity.Product;
 import com.faciotech.facio.entity.ProductOption;
 import com.faciotech.facio.entity.ProductOptionValue;
+import com.faciotech.facio.entity.ProductVariant;
+import com.faciotech.facio.entity.ProductVariantOption;
 import com.faciotech.facio.entity.User;
 import com.faciotech.facio.enums.BusinessTypeEnum;
 import com.faciotech.facio.repository.AddressRespository;
@@ -21,6 +24,8 @@ import com.faciotech.facio.repository.BusinessRespository;
 import com.faciotech.facio.repository.ProductOptionRespository;
 import com.faciotech.facio.repository.ProductOptionValueRespository;
 import com.faciotech.facio.repository.ProductRespository;
+import com.faciotech.facio.repository.ProductVariantOptionRespository;
+import com.faciotech.facio.repository.ProductVariantRespository;
 import com.faciotech.facio.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -35,6 +40,8 @@ public class ProductService {
 	private final ProductRespository productRespository;
 	private final ProductOptionRespository productOptionRespository;
 	private final ProductOptionValueRespository productOptionValueRespository;
+	private final ProductVariantRespository productVariantRespository;
+	private final ProductVariantOptionRespository productVariantOptionRespository;
 
 	public void addProduct(String email, Product product) {
 		User user = userRepository.findByEmail(email).get();
@@ -44,19 +51,9 @@ public class ProductService {
 		product.setBusiness(business);
 
 		productRespository.save(product);
-		
-		for (ProductOption productOption : product.getProductOptions()) {
-			productOption.setProduct(product);
-			productOptionRespository.save(productOption);
-			
-			for (ProductOptionValue productOptionValue : productOption.getProductOptionValues()) {
-				productOptionValue.setProductOption(productOption);
-				productOptionValueRespository.save(productOptionValue);
-			}
-		}
 	}
 
-	public Product getProductDetails(String email, int productId) {
+	public Product getProductDetails(String email, Integer productId) {
 		System.out.println("Debugging");
 //		User user = userRepository.findByEmail(email).get();
 //		Business business = user.getBusiness();
@@ -65,9 +62,9 @@ public class ProductService {
 		if (optionalProduct.isEmpty()) {
 			return null;
 		}
-		
+
 		System.out.println(optionalProduct.get().getCategory().getName());
-		
+
 		return optionalProduct.get();
 	}
 
@@ -77,6 +74,116 @@ public class ProductService {
 		List<Product> categoryList = productRespository.findAllProductForBusiness(business.getId());
 
 		return categoryList;
+	}
+
+	public void addProductOptions(String email, Integer productId, ProductOption productOption) {
+		Product product = getProductDetails(email, productId);
+
+		if (product != null) {
+			productOption.setProduct(product);
+			productOptionRespository.save(productOption);
+
+			for (ProductOptionValue productOptionValue : productOption.getProductOptionValues()) {
+				productOptionValue.setProductOption(productOption);
+				productOptionValueRespository.save(productOptionValue);
+			}
+		}
+	}
+
+	public void updateProductOption(String email, Integer productId, Integer productOptionId,
+			ProductOption productOption) {
+		Product product = getProductDetails(email, productId);
+
+		ProductOption myProductOption = null;
+
+		for (ProductOption productOption2 : product.getProductOptions()) {
+			if (productOption2.getId() == productOptionId) {
+				myProductOption = productOption2;
+				break;
+			}
+		}
+
+		myProductOption.setName(productOption.getName());
+		productOptionRespository.save(myProductOption);
+
+		Set<String> values = new HashSet<String>();
+
+		for (ProductOptionValue productOptionValue : productOption.getProductOptionValues()) {
+			values.add(productOptionValue.getName());
+		}
+
+		for (ProductOptionValue productOptionValue : myProductOption.getProductOptionValues()) {
+			if (values.contains(productOptionValue.getName())) {
+				values.remove(productOptionValue.getName());
+			} else {
+				productOptionValueRespository.delete(productOptionValue);
+			}
+		}
+
+		for (String value : values) {
+			ProductOptionValue productOptionValue = new ProductOptionValue();
+			productOptionValue.setName(value);
+			productOptionValue.setProductOption(myProductOption);
+			productOptionValueRespository.save(productOptionValue);
+		}
+
+	}
+
+	public void deleteProductOption(String email, Integer productId, Integer productOptionId) {
+		Product product = getProductDetails(email, productId);
+
+		for (ProductOption productOption : product.getProductOptions()) {
+			if (productOption.getId() == productOptionId) {
+				productOptionRespository.delete(productOption);
+				break;
+			}
+		}
+	}
+
+	public void addProductVariant(String email, Integer productId, ProductVariant productVariant) {
+		Product product = getProductDetails(email, productId);
+		productVariant.setProduct(product);
+		productVariantRespository.save(productVariant);
+
+		for (ProductVariantOption productVariantOption : productVariant.getProductVariantOptions()) {
+			productVariantOption.setProductVariant(productVariant);
+			productVariantOption.setProductOption(productVariantOption.getProductOption());
+			productVariantOption.setProductOptionValue(productVariantOption.getProductOptionValue());
+			productVariantOptionRespository.save(productVariantOption);
+		}
+	}
+
+	public void updateProductVariant(String email, Integer productId, Integer productVariantId,
+			ProductVariant productVariant) {
+		Product product = getProductDetails(email, productId);
+
+		for (ProductVariant productVariant2 : product.getProductVariants()) {
+			if (productVariant2.getId() == productVariantId) {
+				productVariantRespository.delete(productVariant2);
+				break;
+			}
+		}
+
+		productVariant.setProduct(product);
+		productVariantRespository.save(productVariant);
+
+		for (ProductVariantOption productVariantOption : productVariant.getProductVariantOptions()) {
+			productVariantOption.setProductVariant(productVariant);
+			productVariantOption.setProductOption(productVariantOption.getProductOption());
+			productVariantOption.setProductOptionValue(productVariantOption.getProductOptionValue());
+			productVariantOptionRespository.save(productVariantOption);
+		}
+	}
+
+	public void deleteProductVariant(String email, Integer productId, Integer productVariantId) {
+		Product product = getProductDetails(email, productId);
+
+		for (ProductVariant productVariant2 : product.getProductVariants()) {
+			if (productVariant2.getId() == productVariantId) {
+				productVariantRespository.delete(productVariant2);
+				break;
+			}
+		}
 	}
 
 	protected String generateProductId() {

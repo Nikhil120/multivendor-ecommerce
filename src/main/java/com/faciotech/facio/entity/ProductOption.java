@@ -10,6 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -40,7 +41,7 @@ public class ProductOption {
 	@JsonIgnore
 	private Product product;
 
-	@OneToMany(mappedBy = "productOption")
+	@OneToMany(mappedBy = "productOption", cascade = CascadeType.REMOVE)
 	@JsonIgnore
 	private Set<ProductVariantOption> productVariantOptions;
 

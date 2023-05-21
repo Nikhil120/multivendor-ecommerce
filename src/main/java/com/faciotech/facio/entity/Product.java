@@ -10,6 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -49,7 +50,7 @@ public class Product {
 
 	@ManyToOne
 	@JoinColumn(name = "category_id")
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private Category category;
 
 	@ManyToOne
@@ -57,20 +58,15 @@ public class Product {
 	@JsonIgnore
 	private Business business;
 
-	@OneToMany(mappedBy = "product")
-	@JsonIgnore
+	@OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private Set<ProductVariant> productVariants;
 
-	@OneToMany(mappedBy = "product")
-	@JsonIgnore
-	private Set<ProductVariantOption> productVariantOptions;
-
-	@OneToMany(mappedBy = "product")
-//	@JsonIgnore
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+	@OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private List<ProductOption> productOptions;
 
-	@OneToMany(mappedBy = "product")
+	@OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
 	@JsonIgnore
 	private Set<ProductImage> productImages;
 

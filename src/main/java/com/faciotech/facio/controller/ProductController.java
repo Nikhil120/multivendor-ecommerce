@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.faciotech.facio.entity.Category;
 import com.faciotech.facio.entity.Product;
 import com.faciotech.facio.entity.ProductOption;
+import com.faciotech.facio.entity.ProductVariant;
 import com.faciotech.facio.service.ProductService;
 
 import lombok.RequiredArgsConstructor;
@@ -46,6 +47,14 @@ public class ProductController {
 		return new ResponseEntity<Product>(product, HttpStatus.OK);
 	}
 
+	@PostMapping("/{product_id}")
+	public ResponseEntity<Product> updateProduct(@PathVariable("product_id") Integer productId,
+			@RequestBody Product product) {
+		String email = SecurityContextHolder.getContext().getAuthentication().getName();
+		productService.updateProduct(email, productId, product);
+		return new ResponseEntity<Product>(product, HttpStatus.OK);
+	}
+
 	@GetMapping("/all")
 	public ResponseEntity<HashMap<String, Object>> getAllProduct() {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -70,6 +79,22 @@ public class ProductController {
 			@PathVariable("option_id") Integer optionId, @RequestBody ProductOption productOption) {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 		productService.updateProductOption(email, productId, optionId, productOption);
+		return ResponseEntity.ok("Product option updated successfully.");
+	}
+
+	@PostMapping("{product_id}/variants")
+	public ResponseEntity<String> addProductVariant(@PathVariable("product_id") Integer productId,
+			@RequestBody ProductVariant productVariant) {
+		String email = SecurityContextHolder.getContext().getAuthentication().getName();
+		productService.addProductVariant(email, productId, productVariant);
+		return ResponseEntity.ok("Product option added successfully.");
+	}
+
+	@PostMapping("{product_id}/variants/{variant_id}")
+	public ResponseEntity<String> updateProductVariant(@PathVariable("product_id") Integer productId,
+			@PathVariable("variant_id") Integer variantId, @RequestBody ProductVariant productVariant) {
+		String email = SecurityContextHolder.getContext().getAuthentication().getName();
+		productService.updateProductVariant(email, productId, variantId, productVariant);
 		return ResponseEntity.ok("Product option updated successfully.");
 	}
 }

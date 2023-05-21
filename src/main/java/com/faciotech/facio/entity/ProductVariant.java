@@ -1,6 +1,7 @@
 package com.faciotech.facio.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -53,12 +54,13 @@ public class ProductVariant {
 	private Product product;
 
 	@OneToMany(mappedBy = "productVariant", cascade = CascadeType.REMOVE)
+//	@JsonIgnore
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-	private Set<ProductVariantOption> productVariantOptions;
+	private List<ProductVariantOption> productVariantOptions;
 
-	@OneToMany(mappedBy = "productVariant", cascade = CascadeType.DETACH)
-	@JsonIgnore
-	private Set<ProductImage> productImages;
+//	@OneToMany(mappedBy = "productVariant", cascade = CascadeType.DETACH)
+//	@JsonIgnore
+//	private Set<ProductImage> productImages;
 
 	@CreationTimestamp
 	private LocalDateTime createdAt;

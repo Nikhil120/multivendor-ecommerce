@@ -60,11 +60,11 @@ public class Product {
 
 	@OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-	private Set<ProductVariant> productVariants;
+	private List<ProductOption> productOptions;
 
 	@OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-	private List<ProductOption> productOptions;
+	private List<ProductVariant> productVariants;
 
 	@OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
 	@JsonIgnore

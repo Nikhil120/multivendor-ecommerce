@@ -9,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,18 +32,20 @@ public class ProductVariantOption {
 	@GeneratedValue
 	private Integer id;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.REMOVE)
 	@JoinColumn(name = "product_variant_id")
 	@JsonIgnore
 	private ProductVariant productVariant;
 
 	@ManyToOne
 	@JoinColumn(name = "product_option_id")
+//	@JsonIgnore
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private ProductOption productOption;
 
 	@ManyToOne
 	@JoinColumn(name = "product_option_value_id")
+//	@JsonIgnore
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private ProductOptionValue productOptionValue;
 

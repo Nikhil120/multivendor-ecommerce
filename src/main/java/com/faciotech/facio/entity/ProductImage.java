@@ -38,10 +38,10 @@ public class ProductImage {
 	@JsonIgnore
 	private Product product;
 
-	@ManyToOne
-	@JoinColumn(name = "product_variant_id")
-	@JsonIgnore
-	private ProductVariant productVariant;
+//	@ManyToOne
+//	@JoinColumn(name = "product_variant_id")
+//	@JsonIgnore
+//	private ProductVariant productVariant;
 
 	@CreationTimestamp
 	private LocalDateTime createdAt;

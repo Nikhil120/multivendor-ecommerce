@@ -68,6 +68,16 @@ public class ProductService {
 		return optionalProduct.get();
 	}
 
+	public void updateProduct(String email, Integer productId, Product product) {
+		Product myProduct = getProductDetails(email, productId);
+
+		product.setId(productId);
+		product.setProductCode(myProduct.getProductCode());
+		product.setBusiness(myProduct.getBusiness());
+
+		productRespository.save(product);
+	}
+
 	public List<Product> getAllProducts(String email) {
 		User user = userRepository.findByEmail(email).get();
 		Business business = user.getBusiness();
@@ -143,12 +153,14 @@ public class ProductService {
 	public void addProductVariant(String email, Integer productId, ProductVariant productVariant) {
 		Product product = getProductDetails(email, productId);
 		productVariant.setProduct(product);
+		List<ProductVariantOption> options = productVariant.getProductVariantOptions();
 		productVariantRespository.save(productVariant);
 
-		for (ProductVariantOption productVariantOption : productVariant.getProductVariantOptions()) {
+		System.out.println(options.size());
+		
+		for (ProductVariantOption productVariantOption : options) {
+			System.out.println("Test");
 			productVariantOption.setProductVariant(productVariant);
-			productVariantOption.setProductOption(productVariantOption.getProductOption());
-			productVariantOption.setProductOptionValue(productVariantOption.getProductOptionValue());
 			productVariantOptionRespository.save(productVariantOption);
 		}
 	}
@@ -156,10 +168,12 @@ public class ProductService {
 	public void updateProductVariant(String email, Integer productId, Integer productVariantId,
 			ProductVariant productVariant) {
 		Product product = getProductDetails(email, productId);
-
+		System.out.println("productVariantId: " + productVariantId);
 		for (ProductVariant productVariant2 : product.getProductVariants()) {
-			if (productVariant2.getId() == productVariantId) {
+			System.out.println("Del: " + productVariant2.getId());
+			if (productVariant2.getId().equals(productVariantId)) {
 				productVariantRespository.delete(productVariant2);
+				System.out.println("Deleted");
 				break;
 			}
 		}
@@ -169,8 +183,6 @@ public class ProductService {
 
 		for (ProductVariantOption productVariantOption : productVariant.getProductVariantOptions()) {
 			productVariantOption.setProductVariant(productVariant);
-			productVariantOption.setProductOption(productVariantOption.getProductOption());
-			productVariantOption.setProductOptionValue(productVariantOption.getProductOptionValue());
 			productVariantOptionRespository.save(productVariantOption);
 		}
 	}

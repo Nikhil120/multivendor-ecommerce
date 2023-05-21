@@ -46,7 +46,6 @@ public class ProductOption {
 	private Set<ProductVariantOption> productVariantOptions;
 
 	@OneToMany(mappedBy = "productOption")
-//	@JsonIgnore
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private List<ProductOptionValue> productOptionValues;
 

@@ -28,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 public class CategoryController {
 	private final CategoryService categoryService;
 
-	@PostMapping("/add-category")
+	@PostMapping
 	public ResponseEntity<Category> addCategory(@RequestBody Category category) {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 		categoryService.addCategory(email, category);
@@ -54,7 +54,7 @@ public class CategoryController {
 		return new ResponseEntity<Category>(category, HttpStatus.OK);
 	}
 
-	@GetMapping
+	@GetMapping("/all")
 	public ResponseEntity<HashMap<String, Object>> getAllCategory() {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 		Collection<Category> categoryList = categoryService.getAllCategory(email);

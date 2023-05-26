@@ -54,13 +54,13 @@ public class ProductVariant {
 	private Product product;
 
 	@OneToMany(mappedBy = "productVariant", cascade = CascadeType.REMOVE)
-//	@JsonIgnore
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private List<ProductVariantOption> productVariantOptions;
 
-//	@OneToMany(mappedBy = "productVariant", cascade = CascadeType.DETACH)
-//	@JsonIgnore
-//	private Set<ProductImage> productImages;
+	@OneToMany(mappedBy = "productVariant", cascade = CascadeType.DETACH)
+	@JsonIgnore
+//	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	private List<ProductImage> productImages;
 
 	@CreationTimestamp
 	private LocalDateTime createdAt;

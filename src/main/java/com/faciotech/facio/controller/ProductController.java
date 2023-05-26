@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.faciotech.facio.entity.Category;
 import com.faciotech.facio.entity.Product;
+import com.faciotech.facio.entity.ProductImage;
 import com.faciotech.facio.entity.ProductOption;
 import com.faciotech.facio.entity.ProductVariant;
 import com.faciotech.facio.service.ProductService;
@@ -87,7 +88,7 @@ public class ProductController {
 			@RequestBody ProductVariant productVariant) {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 		productService.addProductVariant(email, productId, productVariant);
-		return ResponseEntity.ok("Product option added successfully.");
+		return ResponseEntity.ok("Product variant added successfully.");
 	}
 
 	@PostMapping("{product_id}/variants/{variant_id}")
@@ -95,6 +96,23 @@ public class ProductController {
 			@PathVariable("variant_id") Integer variantId, @RequestBody ProductVariant productVariant) {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 		productService.updateProductVariant(email, productId, variantId, productVariant);
-		return ResponseEntity.ok("Product option updated successfully.");
+		return ResponseEntity.ok("Product variant updated successfully.");
 	}
+	
+	@PostMapping("{product_id}/images")
+	public ResponseEntity<String> addProductImage(@PathVariable("product_id") Integer productId,
+			@RequestBody ProductImage productImage) {
+		String email = SecurityContextHolder.getContext().getAuthentication().getName();
+		productService.addProductImage(email, productId, productImage);
+		return ResponseEntity.ok("Product image added successfully.");
+	}
+
+	@PostMapping("{product_id}/images/{image_id}")
+	public ResponseEntity<String> updateProductVariant(@PathVariable("product_id") Integer productId,
+			@PathVariable("image_id") Integer imageId, @RequestBody ProductImage productImage) {
+		String email = SecurityContextHolder.getContext().getAuthentication().getName();
+		productService.updateProductImage(email, productId, imageId, productImage);
+		return ResponseEntity.ok("Product image updated successfully.");
+	}
+	
 }

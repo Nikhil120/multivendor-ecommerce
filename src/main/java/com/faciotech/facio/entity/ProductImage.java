@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -38,10 +39,10 @@ public class ProductImage {
 	@JsonIgnore
 	private Product product;
 
-//	@ManyToOne
-//	@JoinColumn(name = "product_variant_id")
-//	@JsonIgnore
-//	private ProductVariant productVariant;
+	@ManyToOne
+	@JoinColumn(name = "product_variant_id")
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	private ProductVariant productVariant;
 
 	@CreationTimestamp
 	private LocalDateTime createdAt;

@@ -13,6 +13,7 @@ import com.faciotech.facio.entity.Address;
 import com.faciotech.facio.entity.Business;
 import com.faciotech.facio.entity.Category;
 import com.faciotech.facio.entity.Product;
+import com.faciotech.facio.entity.ProductImage;
 import com.faciotech.facio.entity.ProductOption;
 import com.faciotech.facio.entity.ProductOptionValue;
 import com.faciotech.facio.entity.ProductVariant;
@@ -21,6 +22,7 @@ import com.faciotech.facio.entity.User;
 import com.faciotech.facio.enums.BusinessTypeEnum;
 import com.faciotech.facio.repository.AddressRespository;
 import com.faciotech.facio.repository.BusinessRespository;
+import com.faciotech.facio.repository.ProductImageRepository;
 import com.faciotech.facio.repository.ProductOptionRespository;
 import com.faciotech.facio.repository.ProductOptionValueRespository;
 import com.faciotech.facio.repository.ProductRespository;
@@ -42,6 +44,7 @@ public class ProductService {
 	private final ProductOptionValueRespository productOptionValueRespository;
 	private final ProductVariantRespository productVariantRespository;
 	private final ProductVariantOptionRespository productVariantOptionRespository;
+	private final ProductImageRepository productImageRepository;
 
 	public void addProduct(String email, Product product) {
 		User user = userRepository.findByEmail(email).get();
@@ -157,7 +160,7 @@ public class ProductService {
 		productVariantRespository.save(productVariant);
 
 		System.out.println(options.size());
-		
+
 		for (ProductVariantOption productVariantOption : options) {
 			System.out.println("Test");
 			productVariantOption.setProductVariant(productVariant);
@@ -196,6 +199,31 @@ public class ProductService {
 				break;
 			}
 		}
+	}
+
+	public void addProductImage(String email, Integer productId, ProductImage productImage) {
+		Product product = getProductDetails(email, productId);
+
+		productImage.setProduct(product);
+
+		productImageRepository.save(productImage);
+	}
+
+	public void updateProductImage(String email, Integer productId, Integer productImageId, ProductImage productImage) {
+		Product product = getProductDetails(email, productId);
+		List<ProductImage> productImages = product.getProductImages();
+
+		for (ProductImage productImage2 : productImages) {
+			if (productImage2.getId().equals(productImageId)) {
+				productImage2.setProductVariant(productImage.getProductVariant());
+				productImageRepository.save(productImage2);
+				break;
+			}
+		}
+
+		productImage.setProduct(product);
+
+		productImageRepository.save(productImage);
 	}
 
 	protected String generateProductId() {

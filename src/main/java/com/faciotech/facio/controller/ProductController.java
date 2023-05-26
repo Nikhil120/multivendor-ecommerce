@@ -91,7 +91,7 @@ public class ProductController {
 		productService.deleteProductOption(email, productId, optionId);
 		return ResponseEntity.ok("Product option deleted successfully.");
 	}
-	
+
 	@PostMapping("{product_id}/variants")
 	public ResponseEntity<String> addProductVariant(@PathVariable("product_id") Integer productId,
 			@RequestBody ProductVariant productVariant) {
@@ -106,6 +106,14 @@ public class ProductController {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 		productService.updateProductVariant(email, productId, variantId, productVariant);
 		return ResponseEntity.ok("Product variant updated successfully.");
+	}
+
+	@DeleteMapping("{product_id}/variants/{variant_id}")
+	public ResponseEntity<String> deleteProductVariant(@PathVariable("product_id") Integer productId,
+			@PathVariable("variant_id") Integer variantId) {
+		String email = SecurityContextHolder.getContext().getAuthentication().getName();
+		productService.deleteProductVariant(email, productId, variantId);
+		return ResponseEntity.ok("Product variant deleted successfully.");
 	}
 
 	@PostMapping("{product_id}/images")
@@ -125,7 +133,7 @@ public class ProductController {
 	}
 
 	@DeleteMapping("{product_id}/images/{image_id}")
-	public ResponseEntity<String> deleteProductVariant(@PathVariable("product_id") Integer productId,
+	public ResponseEntity<String> deleteProductImage(@PathVariable("product_id") Integer productId,
 			@PathVariable("image_id") Integer imageId) {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 		productService.deleteProductImage(email, productId, imageId);

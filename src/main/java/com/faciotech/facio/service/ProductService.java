@@ -194,7 +194,7 @@ public class ProductService {
 		Product product = getProductDetails(email, productId);
 
 		for (ProductVariant productVariant2 : product.getProductVariants()) {
-			if (productVariant2.getId() == productVariantId) {
+			if (productVariant2.getId().equals(productVariantId)) {
 				productVariantRespository.delete(productVariant2);
 				break;
 			}

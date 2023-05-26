@@ -57,7 +57,7 @@ public class ProductVariant {
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private List<ProductVariantOption> productVariantOptions;
 
-	@OneToMany(mappedBy = "productVariant", cascade = CascadeType.DETACH)
+	@OneToMany(mappedBy = "productVariant", cascade = CascadeType.REMOVE)
 	@JsonIgnore
 //	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private List<ProductImage> productImages;

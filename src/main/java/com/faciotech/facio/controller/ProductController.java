@@ -7,6 +7,7 @@ import java.util.Set;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -83,6 +84,14 @@ public class ProductController {
 		return ResponseEntity.ok("Product option updated successfully.");
 	}
 
+	@DeleteMapping("{product_id}/options/{option_id}")
+	public ResponseEntity<String> deleteProductOption(@PathVariable("product_id") Integer productId,
+			@PathVariable("option_id") Integer optionId) {
+		String email = SecurityContextHolder.getContext().getAuthentication().getName();
+		productService.deleteProductOption(email, productId, optionId);
+		return ResponseEntity.ok("Product option deleted successfully.");
+	}
+	
 	@PostMapping("{product_id}/variants")
 	public ResponseEntity<String> addProductVariant(@PathVariable("product_id") Integer productId,
 			@RequestBody ProductVariant productVariant) {
@@ -98,7 +107,7 @@ public class ProductController {
 		productService.updateProductVariant(email, productId, variantId, productVariant);
 		return ResponseEntity.ok("Product variant updated successfully.");
 	}
-	
+
 	@PostMapping("{product_id}/images")
 	public ResponseEntity<String> addProductImage(@PathVariable("product_id") Integer productId,
 			@RequestBody ProductImage productImage) {
@@ -114,5 +123,12 @@ public class ProductController {
 		productService.updateProductImage(email, productId, imageId, productImage);
 		return ResponseEntity.ok("Product image updated successfully.");
 	}
-	
+
+	@DeleteMapping("{product_id}/images/{image_id}")
+	public ResponseEntity<String> deleteProductVariant(@PathVariable("product_id") Integer productId,
+			@PathVariable("image_id") Integer imageId) {
+		String email = SecurityContextHolder.getContext().getAuthentication().getName();
+		productService.deleteProductImage(email, productId, imageId);
+		return ResponseEntity.ok("Product image deleted successfully.");
+	}
 }

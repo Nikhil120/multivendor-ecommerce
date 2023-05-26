@@ -220,10 +220,18 @@ public class ProductService {
 				break;
 			}
 		}
+	}
+	
+	public void deleteProductImage(String email, Integer productId, Integer productImageId) {
+		Product product = getProductDetails(email, productId);
+		List<ProductImage> productImages = product.getProductImages();
 
-		productImage.setProduct(product);
-
-		productImageRepository.save(productImage);
+		for (ProductImage productImage2 : productImages) {
+			if (productImage2.getId().equals(productImageId)) {
+				productImageRepository.delete(productImage2);
+				break;
+			}
+		}
 	}
 
 	protected String generateProductId() {

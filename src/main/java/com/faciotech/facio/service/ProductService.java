@@ -110,7 +110,7 @@ public class ProductService {
 		ProductOption myProductOption = null;
 
 		for (ProductOption productOption2 : product.getProductOptions()) {
-			if (productOption2.getId() == productOptionId) {
+			if (productOption2.getId().equals(productOptionId)) {
 				myProductOption = productOption2;
 				break;
 			}

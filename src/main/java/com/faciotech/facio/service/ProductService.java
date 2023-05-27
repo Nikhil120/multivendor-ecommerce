@@ -81,6 +81,12 @@ public class ProductService {
 		productRespository.save(product);
 	}
 
+	public void deleteProduct(String email, Integer productId) {
+		Product product = getProductDetails(email, productId);
+
+		productRespository.delete(product);
+	}
+
 	public List<Product> getAllProducts(String email) {
 		User user = userRepository.findByEmail(email).get();
 		Business business = user.getBusiness();
@@ -221,7 +227,7 @@ public class ProductService {
 			}
 		}
 	}
-	
+
 	public void deleteProductImage(String email, Integer productId, Integer productImageId) {
 		Product product = getProductDetails(email, productId);
 		List<ProductImage> productImages = product.getProductImages();

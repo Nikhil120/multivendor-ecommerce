@@ -146,7 +146,7 @@ public class ProductService {
 		Product product = getProductDetails(email, productId);
 
 		for (ProductOption productOption : product.getProductOptions()) {
-			if (productOption.getId() == productOptionId) {
+			if (productOption.getId().equals(productOptionId)) {
 				productOptionRespository.delete(productOption);
 				break;
 			}

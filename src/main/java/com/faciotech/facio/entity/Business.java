@@ -1,7 +1,7 @@
 package com.faciotech.facio.entity;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -65,15 +65,15 @@ public class Business {
 
 	@OneToMany(mappedBy = "business")
 	@JsonIgnore
-	private Set<User> users;
+	private List<User> users;
 
 	@OneToMany(mappedBy = "business")
 	@JsonIgnore
-	private Set<Category> categories;
+	private List<Category> categories;
 
 	@OneToMany(mappedBy = "business")
 	@JsonIgnore
-	private Set<Product> products;
+	private List<Product> products;
 
 	@Column
 	private String description;

@@ -1,7 +1,7 @@
 package com.faciotech.facio.entity;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -49,7 +49,7 @@ public class Category {
 
 	@OneToMany(mappedBy = "category")
 	@JsonIgnore
-	private Set<Product> products;
+	private List<Product> products;
 
 	@CreationTimestamp
 	private LocalDateTime createdAt;

@@ -1,6 +1,7 @@
 package com.faciotech.facio.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -8,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -33,14 +35,14 @@ public class ProductOptionValue {
 	@Column(nullable = false, length = 40)
 	private String name;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.REMOVE)
 	@JoinColumn(name = "product_option_id")
 	@JsonIgnore
 	private ProductOption productOption;
 
 	@OneToMany(mappedBy = "productOptionValue")
 	@JsonIgnore
-	private Set<ProductVariantOption> productVariantOptions;
+	private List<ProductVariantOption> productVariantOptions;
 
 	@CreationTimestamp
 	private LocalDateTime createdAt;

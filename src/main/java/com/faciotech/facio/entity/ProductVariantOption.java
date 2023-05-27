@@ -32,7 +32,7 @@ public class ProductVariantOption {
 	@GeneratedValue
 	private Integer id;
 
-	@ManyToOne(cascade = CascadeType.REMOVE)
+	@ManyToOne
 	@JoinColumn(name = "product_variant_id")
 	@JsonIgnore
 	private ProductVariant productVariant;

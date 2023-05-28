@@ -35,13 +35,9 @@ public class AuthenticationController {
 	@PostMapping("/register")
 	public ResponseEntity<String> register(@RequestBody RegisterRequest request)
 			throws UnsupportedEncodingException, MessagingException {
-		boolean status = authenticationService.register(request, "http://localhost:8080/api/v1/auth");
+		String responseMessage = authenticationService.register(request, "http://localhost:8080/api/v1/auth");
 
-		if (status) {
-			return ResponseEntity.ok(
-					"User Successfully Registed. Please verify email address by clicking the link send to your mail.");
-		}
-		return ResponseEntity.ok("User Already Exist.");
+		return ResponseEntity.ok(responseMessage);
 	}
 
 	@PostMapping("/login")

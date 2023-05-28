@@ -31,6 +31,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor
@@ -44,12 +46,22 @@ public class AuthenticationService {
 	private final AuthenticationManager authenticationManager;
 	private final JavaMailSender mailSender;
 
-	public boolean register(RegisterRequest request, String siteURL)
+	private static final String EMAIL_PATTERN = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+	private static final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$";
+	
+	public String register(RegisterRequest request, String siteURL)
 			throws UnsupportedEncodingException, MessagingException {
 		byte[] array = new byte[7];
 		new Random().nextBytes(array);
 		String randomCode = generateVeificationCode();
-
+		
+		if (!validateEmail(request.getEmail())) {
+			return "Invalid Email";
+		}
+		if (!validatePassword(request.getPassword())) {
+			return "Password should contains atleast 8 character. It should contains atleast one uppercase character, one lowercase character, one digit and one special character";
+		}
+		
 		User user = User.builder().firstname(request.getFirstname()).lastname(request.getLastname())
 				.email(request.getEmail()).password(passwordEncoder.encode(request.getPassword())).role(Role.USER)
 				.verificationCode(randomCode).isVerified(false).build();
@@ -59,10 +71,10 @@ public class AuthenticationService {
 		if (existingUser.isEmpty()) {
 			repository.save(user);
 			sendVerificationEmail(user, siteURL);
-			return true;
+			return "User Successfully Registed. Please verify email address by clicking the link send to your mail.";
 		}
 
-		return false;
+		return "User already exists.";
 	}
 
 	public AuthenticationResponse authenticate(AuthenticationRequest request) {
@@ -157,6 +169,18 @@ public class AuthenticationService {
 			return true;
 		}
 
+	}
+
+	public boolean validateEmail(String email) {
+		Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+		Matcher matcher = pattern.matcher(email);
+		return matcher.matches();
+	}
+
+	public boolean validatePassword(String password) {
+		Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
+		Matcher matcher = pattern.matcher(password);
+		return matcher.matches();
 	}
 
 	protected String generateVeificationCode() {

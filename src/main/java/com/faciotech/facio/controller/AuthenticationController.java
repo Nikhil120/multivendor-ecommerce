@@ -50,7 +50,7 @@ public class AuthenticationController {
 		try {
 			responseEntity = ResponseEntity.ok(authenticationService.authenticate(request));
 		} catch (Exception e) {
-			responseEntity = ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found or email not verified");
+			responseEntity = ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid email or password");
 		}
 
 		return responseEntity;

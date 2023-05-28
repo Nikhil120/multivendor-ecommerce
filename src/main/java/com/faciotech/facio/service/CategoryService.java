@@ -77,6 +77,17 @@ public class CategoryService {
 		return categoryList;
 	}
 
+	public void deleteCategory(String email, Integer categoryId) {
+		User user = userRepository.findByEmail(email).get();
+		Business business = user.getBusiness();
+		Optional<Category> optionalCategory = categoryRepository.findByBusinessAndCategory(business.getId(),
+				categoryId);
+
+		if (optionalCategory.isPresent()) {
+			categoryRepository.delete(optionalCategory.get());
+		}
+	}
+
 	protected String generateCategoryId() {
 		String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 		StringBuilder code = new StringBuilder();

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,6 +37,13 @@ public class CategoryController {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 		Category updatedCategory = categoryService.updateCategory(email, id, category);
 		return new ResponseEntity<Category>(updatedCategory, HttpStatus.OK);
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<String> deleteCategory(@PathVariable("id") Integer id) {
+		String email = SecurityContextHolder.getContext().getAuthentication().getName();
+		categoryService.deleteCategory(email, id);
+		return ResponseEntity.ok("Category Deleted successfully");
 	}
 
 	@GetMapping("/{id}")

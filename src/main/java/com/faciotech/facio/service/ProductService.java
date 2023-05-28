@@ -57,10 +57,9 @@ public class ProductService {
 	}
 
 	public Product getProductDetails(String email, Integer productId) {
-		System.out.println("Debugging");
-//		User user = userRepository.findByEmail(email).get();
-//		Business business = user.getBusiness();
-		Optional<Product> optionalProduct = productRespository.findByBusinessAndProduct(1, productId);
+		User user = userRepository.findByEmail(email).get();
+		Business business = user.getBusiness();
+		Optional<Product> optionalProduct = productRespository.findByBusinessAndProduct(business.getId(), productId);
 
 		if (optionalProduct.isEmpty()) {
 			return null;

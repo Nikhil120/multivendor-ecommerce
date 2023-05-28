@@ -56,12 +56,12 @@ public class ProductController {
 	}
 
 	@DeleteMapping("/{product_id}")
-	public ResponseEntity deleteProduct(@PathVariable("product_id") Integer productId) {
+	public ResponseEntity<String> deleteProduct(@PathVariable("product_id") Integer productId) {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 		productService.deleteProduct(email, productId);
 		return ResponseEntity.ok("Product deleted successfully.");
 	}
-	
+
 	@GetMapping("/all")
 	public ResponseEntity<HashMap<String, Object>> getAllProduct() {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();

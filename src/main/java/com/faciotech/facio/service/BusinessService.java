@@ -68,7 +68,9 @@ public class BusinessService {
 		myBusiness.setEmail(business.getEmail());
 		myBusiness.setPhoneNumber1(business.getPhoneNumber1());
 		myBusiness.setPhoneNumber2(business.getPhoneNumber2());
-
+		myBusiness.setLogo(business.getLogo());
+		myBusiness.setCoverImage(business.getCoverImage());
+		
 		Address myAddress = myBusiness.getAddress();
 		myAddress.setAddressline(address.getAddressline());
 		myAddress.setPinCode(address.getPinCode());

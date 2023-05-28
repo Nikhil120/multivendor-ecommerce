@@ -34,7 +34,7 @@ public class ProductOptionValue {
 	@Column(nullable = false, length = 40)
 	private String name;
 
-	@ManyToOne(cascade = CascadeType.REMOVE)
+	@ManyToOne
 	@JoinColumn(name = "product_option_id")
 	@JsonIgnore
 	private ProductOption productOption;

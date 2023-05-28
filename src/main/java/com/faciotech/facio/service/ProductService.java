@@ -22,6 +22,7 @@ import com.faciotech.facio.entity.User;
 import com.faciotech.facio.enums.BusinessTypeEnum;
 import com.faciotech.facio.repository.AddressRespository;
 import com.faciotech.facio.repository.BusinessRespository;
+import com.faciotech.facio.repository.CategoryRepository;
 import com.faciotech.facio.repository.ProductImageRepository;
 import com.faciotech.facio.repository.ProductOptionRespository;
 import com.faciotech.facio.repository.ProductOptionValueRespository;
@@ -39,6 +40,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ProductService {
 	private final UserRepository userRepository;
+	private final CategoryRepository categoryRepository;
 	private final ProductRespository productRespository;
 	private final ProductOptionRespository productOptionRespository;
 	private final ProductOptionValueRespository productOptionValueRespository;
@@ -54,6 +56,18 @@ public class ProductService {
 		product.setBusiness(business);
 
 		productRespository.save(product);
+
+		Optional<Category> optionalCategory = categoryRepository.findById(product.getCategory().getId());
+		
+		if (optionalCategory.isPresent()) {
+			Category category = optionalCategory.get();
+			int count = category.getProductCount();
+			System.out.println("Count" + count);
+			category.setProductCount(count + 1);
+
+			categoryRepository.save(category);			
+		}
+
 	}
 
 	public Product getProductDetails(String email, Integer productId) {

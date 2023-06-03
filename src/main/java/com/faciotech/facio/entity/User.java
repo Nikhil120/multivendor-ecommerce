@@ -51,6 +51,7 @@ public class User implements UserDetails {
 	private String email;
 
 	@Column(nullable = false, length = 64)
+	@JsonIgnore
 	private String password;
 
 	@Column
@@ -63,6 +64,7 @@ public class User implements UserDetails {
 	private Boolean isPhoneVerified;
 
 	@Column
+	@JsonIgnore
 	private String verificationCode;
 
 	@Column(nullable = false)

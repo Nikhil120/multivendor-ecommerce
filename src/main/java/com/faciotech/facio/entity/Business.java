@@ -56,7 +56,7 @@ public class Business {
 	@Column
 	private String coverImage;
 
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "address_id", referencedColumnName = "id")
 	private Address address;
 
@@ -64,15 +64,12 @@ public class Business {
 	private BusinessTypeEnum businessType;
 
 	@OneToMany(mappedBy = "business")
-	@JsonIgnore
 	private List<User> users;
 
 	@OneToMany(mappedBy = "business")
-	@JsonIgnore
 	private List<Category> categories;
 
 	@OneToMany(mappedBy = "business")
-	@JsonIgnore
 	private List<Product> products;
 
 	@Column

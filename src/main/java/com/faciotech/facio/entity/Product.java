@@ -49,24 +49,19 @@ public class Product {
 
 	@ManyToOne
 	@JoinColumn(name = "category_id")
-	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private Category category;
 
 	@ManyToOne
 	@JoinColumn(name = "business_id")
-	@JsonIgnore
 	private Business business;
 
 	@OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
-	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private List<ProductOption> productOptions;
 
 	@OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
-	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private List<ProductVariant> productVariants;
 
 	@OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
-	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private List<ProductImage> productImages;
 
 	@Column

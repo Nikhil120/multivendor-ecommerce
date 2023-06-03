@@ -30,19 +30,14 @@ public class ProductVariantOption {
 
 	@ManyToOne
 	@JoinColumn(name = "product_variant_id")
-	@JsonIgnore
 	private ProductVariant productVariant;
 
 	@ManyToOne
 	@JoinColumn(name = "product_option_id")
-//	@JsonIgnore
-	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private ProductOption productOption;
 
 	@ManyToOne
 	@JoinColumn(name = "product_option_value_id")
-//	@JsonIgnore
-	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private ProductOptionValue productOptionValue;
 
 	@CreationTimestamp

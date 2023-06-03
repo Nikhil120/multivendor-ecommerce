@@ -34,12 +34,10 @@ public class ProductImage {
 
 	@ManyToOne
 	@JoinColumn(name = "product_id")
-	@JsonIgnore
 	private Product product;
 
 	@ManyToOne
 	@JoinColumn(name = "product_variant_id")
-	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private ProductVariant productVariant;
 
 	@CreationTimestamp

@@ -47,7 +47,6 @@ public class Address {
 	private String googleMapLink;
 
 	@OneToOne(mappedBy = "address")
-	@JsonIgnore
 	private Business business;
 
 	@CreationTimestamp

@@ -44,11 +44,9 @@ public class Category {
 
 	@ManyToOne
 	@JoinColumn(name = "business_id")
-	@JsonIgnore
 	private Business business;
 
 	@OneToMany(mappedBy = "category")
-	@JsonIgnore
 	private List<Product> products;
 
 	@CreationTimestamp

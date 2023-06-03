@@ -37,15 +37,12 @@ public class ProductOption {
 
 	@ManyToOne
 	@JoinColumn(name = "product_id")
-	@JsonIgnore
 	private Product product;
 
 	@OneToMany(mappedBy = "productOption", cascade = CascadeType.REMOVE)
-	@JsonIgnore
 	private List<ProductVariantOption> productVariantOptions;
 
 	@OneToMany(mappedBy = "productOption", cascade = CascadeType.REMOVE)
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private List<ProductOptionValue> productOptionValues;
 
 	@CreationTimestamp

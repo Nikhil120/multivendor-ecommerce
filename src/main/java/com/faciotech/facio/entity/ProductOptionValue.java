@@ -36,11 +36,9 @@ public class ProductOptionValue {
 
 	@ManyToOne
 	@JoinColumn(name = "product_option_id")
-	@JsonIgnore
 	private ProductOption productOption;
 
 	@OneToMany(mappedBy = "productOptionValue")
-	@JsonIgnore
 	private List<ProductVariantOption> productVariantOptions;
 
 	@CreationTimestamp

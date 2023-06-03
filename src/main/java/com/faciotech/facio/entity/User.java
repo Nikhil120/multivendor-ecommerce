@@ -73,7 +73,6 @@ public class User implements UserDetails {
 
 	@ManyToOne
 	@JoinColumn(name = "business_id")
-	@JsonIgnore
 	private Business business;
 
 	@CreationTimestamp

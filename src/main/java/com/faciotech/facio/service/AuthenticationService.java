@@ -16,7 +16,6 @@ import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -36,7 +35,6 @@ import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class AuthenticationService {
 	private final UserRepository repository;
 	private final TokenRepository tokenRepository;
@@ -48,20 +46,19 @@ public class AuthenticationService {
 
 	private static final String EMAIL_PATTERN = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
 	private static final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$";
-	
-	public String register(UserDTO request, String siteURL)
-			throws UnsupportedEncodingException, MessagingException {
+
+	public String register(UserDTO request, String siteURL) throws UnsupportedEncodingException, MessagingException {
 		byte[] array = new byte[7];
 		new Random().nextBytes(array);
 		String randomCode = generateVeificationCode();
-		
+
 		if (!validateEmail(request.getEmail())) {
 			return "Invalid Email";
 		}
 		if (!validatePassword(request.getPassword())) {
 			return "Password should contains atleast 8 character. It should contains atleast one uppercase character, one lowercase character, one digit and one special character";
 		}
-		
+
 		User user = User.builder().firstname(request.getFirstname()).lastname(request.getLastname())
 				.email(request.getEmail()).password(passwordEncoder.encode(request.getPassword())).role(Role.USER)
 				.verificationCode(randomCode).isVerified(false).build();
@@ -120,8 +117,8 @@ public class AuthenticationService {
 				var accessToken = jwtService.generateToken(user);
 				revokeAllUserTokens(user);
 				saveUserToken(user, accessToken);
-				var authResponse = AuthenticationResponseDTO.builder().accessToken(accessToken).refreshToken(refreshToken)
-						.build();
+				var authResponse = AuthenticationResponseDTO.builder().accessToken(accessToken)
+						.refreshToken(refreshToken).build();
 				new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
 			}
 		}

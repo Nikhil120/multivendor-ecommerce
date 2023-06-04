@@ -1,7 +1,6 @@
 package com.faciotech.facio.dto;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.faciotech.facio.entity.Business;
@@ -40,7 +39,7 @@ public class BusinessDTO {
 	private List<UserDTO> users;
 
 	private List<CategoryDTO> categories;
-//
+
 	private List<ProductDTO> products;
 
 	private String description;

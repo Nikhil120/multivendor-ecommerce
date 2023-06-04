@@ -4,7 +4,6 @@ import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
@@ -26,7 +25,6 @@ import java.io.UnsupportedEncodingException;
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
-@Slf4j
 public class AuthenticationController {
 
 	private final AuthenticationService authenticationService;

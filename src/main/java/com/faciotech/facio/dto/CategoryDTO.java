@@ -3,7 +3,6 @@ package com.faciotech.facio.dto;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.faciotech.facio.entity.Business;
 import com.faciotech.facio.entity.Category;
 
 import lombok.AllArgsConstructor;

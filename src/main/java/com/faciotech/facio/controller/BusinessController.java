@@ -11,12 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.faciotech.facio.dto.BusinessDTO;
-import com.faciotech.facio.entity.Business;
 import com.faciotech.facio.service.BusinessService;
-
-import jakarta.websocket.server.PathParam;
-
-//import com.faciotech.facio.business.entity.Business;
 
 import lombok.RequiredArgsConstructor;
 

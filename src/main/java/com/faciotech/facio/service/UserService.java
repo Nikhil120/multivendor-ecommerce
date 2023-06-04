@@ -1,11 +1,8 @@
 package com.faciotech.facio.service;
 
-import java.util.Optional;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.faciotech.facio.entity.User;
 import com.faciotech.facio.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -23,7 +20,6 @@ public class UserService {
 		log.info("Adding role {} to user {}", roleName, email);
 //		Optional<User> user = userRepository.findByEmail(email);
 //		Optional<Role> role = roleRepository.findByName(roleName);
-
 
 	}
 }

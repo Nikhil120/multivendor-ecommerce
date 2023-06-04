@@ -16,12 +16,10 @@ import com.faciotech.facio.repository.BusinessRespository;
 import com.faciotech.facio.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
-@Slf4j
 public class BusinessService {
 	private final UserRepository userRepository;
 	private final BusinessRespository businessRespository;
@@ -75,12 +73,12 @@ public class BusinessService {
 		business.setPhoneNumber2(businessDTO.getPhoneNumber2());
 		business.setLogo(businessDTO.getLogo());
 		business.setCoverImage(businessDTO.getCoverImage());
-		
+
 		Address address = business.getAddress();
 		address.setAddressline(addressDTO.getAddressline());
-		
+
 		System.out.println(addressDTO.getPinCode());
-		
+
 		address.setPinCode(addressDTO.getPinCode());
 		address.setCity(addressDTO.getCity());
 		address.setState(addressDTO.getState());

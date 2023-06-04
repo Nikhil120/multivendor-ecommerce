@@ -9,7 +9,6 @@ import java.util.Set;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.faciotech.facio.entity.Address;
 import com.faciotech.facio.entity.Business;
 import com.faciotech.facio.entity.Category;
 import com.faciotech.facio.entity.Product;
@@ -19,9 +18,6 @@ import com.faciotech.facio.entity.ProductOptionValue;
 import com.faciotech.facio.entity.ProductVariant;
 import com.faciotech.facio.entity.ProductVariantOption;
 import com.faciotech.facio.entity.User;
-import com.faciotech.facio.enums.BusinessTypeEnum;
-import com.faciotech.facio.repository.AddressRespository;
-import com.faciotech.facio.repository.BusinessRespository;
 import com.faciotech.facio.repository.CategoryRepository;
 import com.faciotech.facio.repository.ProductImageRepository;
 import com.faciotech.facio.repository.ProductOptionRespository;
@@ -32,12 +28,10 @@ import com.faciotech.facio.repository.ProductVariantRespository;
 import com.faciotech.facio.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
-@Slf4j
 public class ProductService {
 	private final UserRepository userRepository;
 	private final CategoryRepository categoryRepository;
@@ -58,14 +52,14 @@ public class ProductService {
 		productRespository.save(product);
 
 		Optional<Category> optionalCategory = categoryRepository.findById(product.getCategory().getId());
-		
+
 		if (optionalCategory.isPresent()) {
 			Category category = optionalCategory.get();
 			int count = category.getProductCount();
 			System.out.println("Count" + count);
 			category.setProductCount(count + 1);
 
-			categoryRepository.save(category);			
+			categoryRepository.save(category);
 		}
 
 	}

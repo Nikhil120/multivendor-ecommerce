@@ -5,6 +5,8 @@ import java.util.Random;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.faciotech.facio.dto.AddressDTO;
+import com.faciotech.facio.dto.BusinessDTO;
 import com.faciotech.facio.entity.Address;
 import com.faciotech.facio.entity.Business;
 import com.faciotech.facio.entity.User;
@@ -53,37 +55,43 @@ public class BusinessService {
 		userRepository.save(user);
 	}
 
-	public Business getBusinessDetails(String email) {
+	public BusinessDTO getBusinessDetails(String email) {
 		User user = userRepository.findByEmail(email).orElseThrow();
-		return user.getBusiness();
+
+		BusinessDTO businessDTO = new BusinessDTO(user.getBusiness());
+
+		return businessDTO;
 	}
 
-	public Business updateBusiness(String email, Business business) {
+	public BusinessDTO updateBusiness(String email, BusinessDTO businessDTO) {
 		User user = userRepository.findByEmail(email).orElseThrow();
-		Address address = business.getAddress();
-		Business myBusiness = user.getBusiness();
+		AddressDTO addressDTO = businessDTO.getAddress();
+		Business business = user.getBusiness();
 
-		myBusiness.setName(business.getName());
-		myBusiness.setDescription(business.getDescription());
-		myBusiness.setEmail(business.getEmail());
-		myBusiness.setPhoneNumber1(business.getPhoneNumber1());
-		myBusiness.setPhoneNumber2(business.getPhoneNumber2());
-		myBusiness.setLogo(business.getLogo());
-		myBusiness.setCoverImage(business.getCoverImage());
+		business.setName(businessDTO.getName());
+		business.setDescription(businessDTO.getDescription());
+		business.setEmail(businessDTO.getEmail());
+		business.setPhoneNumber1(businessDTO.getPhoneNumber1());
+		business.setPhoneNumber2(businessDTO.getPhoneNumber2());
+		business.setLogo(businessDTO.getLogo());
+		business.setCoverImage(businessDTO.getCoverImage());
 		
-		Address myAddress = myBusiness.getAddress();
-		myAddress.setAddressline(address.getAddressline());
-		myAddress.setPinCode(address.getPinCode());
-		myAddress.setCity(address.getCity());
-		myAddress.setState(address.getState());
-		myAddress.setCountry(address.getCountry());
-		myAddress.setGoogleMapLink(address.getGoogleMapLink());
+		Address address = business.getAddress();
+		address.setAddressline(addressDTO.getAddressline());
+		
+		System.out.println(addressDTO.getPinCode());
+		
+		address.setPinCode(addressDTO.getPinCode());
+		address.setCity(addressDTO.getCity());
+		address.setState(addressDTO.getState());
+		address.setCountry(addressDTO.getCountry());
+		address.setGoogleMapLink(addressDTO.getGoogleMapLink());
 
-		addressRespository.save(myAddress);
+		addressRespository.save(address);
 
-		businessRespository.save(myBusiness);
+		businessRespository.save(business);
 
-		return business;
+		return new BusinessDTO(business);
 	}
 
 	public void addUserToBusiness(Long businessId, User user) {

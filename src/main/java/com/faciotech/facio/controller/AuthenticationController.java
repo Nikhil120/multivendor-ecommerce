@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.faciotech.facio.dto.AuthenticationRequestDTO;
+import com.faciotech.facio.dto.UserDTO;
 import com.faciotech.facio.service.AuthenticationService;
 import com.faciotech.facio.service.BusinessService;
-import com.faciotech.facio.util.AuthenticationRequest;
-import com.faciotech.facio.util.RegisterRequest;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -33,7 +33,7 @@ public class AuthenticationController {
 	private final BusinessService businessService;
 
 	@PostMapping("/register")
-	public ResponseEntity<String> register(@RequestBody RegisterRequest request)
+	public ResponseEntity<String> register(@RequestBody UserDTO request)
 			throws UnsupportedEncodingException, MessagingException {
 		String responseMessage = authenticationService.register(request, "http://localhost:8080/api/v1/auth");
 
@@ -41,7 +41,7 @@ public class AuthenticationController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<Object> authenticate(@RequestBody AuthenticationRequest request) {
+	public ResponseEntity<Object> authenticate(@RequestBody AuthenticationRequestDTO request) {
 		ResponseEntity<Object> responseEntity;
 		try {
 			responseEntity = ResponseEntity.ok(authenticationService.authenticate(request));

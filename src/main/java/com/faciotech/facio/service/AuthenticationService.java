@@ -1,14 +1,14 @@
 package com.faciotech.facio.service;
 
+import com.faciotech.facio.dto.AuthenticationRequestDTO;
+import com.faciotech.facio.dto.AuthenticationResponseDTO;
+import com.faciotech.facio.dto.UserDTO;
 import com.faciotech.facio.entity.Token;
 import com.faciotech.facio.entity.User;
 import com.faciotech.facio.enums.Role;
 import com.faciotech.facio.enums.TokenType;
 import com.faciotech.facio.repository.TokenRepository;
 import com.faciotech.facio.repository.UserRepository;
-import com.faciotech.facio.util.AuthenticationRequest;
-import com.faciotech.facio.util.AuthenticationResponse;
-import com.faciotech.facio.util.RegisterRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.mail.MessagingException;
@@ -49,7 +49,7 @@ public class AuthenticationService {
 	private static final String EMAIL_PATTERN = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
 	private static final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$";
 	
-	public String register(RegisterRequest request, String siteURL)
+	public String register(UserDTO request, String siteURL)
 			throws UnsupportedEncodingException, MessagingException {
 		byte[] array = new byte[7];
 		new Random().nextBytes(array);
@@ -77,7 +77,7 @@ public class AuthenticationService {
 		return "User already exists.";
 	}
 
-	public AuthenticationResponse authenticate(AuthenticationRequest request) {
+	public AuthenticationResponseDTO authenticate(AuthenticationRequestDTO request) {
 		authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 		User user = repository.findByEmail(request.getEmail()).orElseThrow();
@@ -85,7 +85,7 @@ public class AuthenticationService {
 		var refreshToken = jwtService.generateRefreshToken(user);
 		revokeAllUserTokens(user);
 		saveUserToken(user, jwtToken);
-		return AuthenticationResponse.builder().accessToken(jwtToken).refreshToken(refreshToken).build();
+		return AuthenticationResponseDTO.builder().accessToken(jwtToken).refreshToken(refreshToken).build();
 	}
 
 	private void saveUserToken(User user, String jwtToken) {
@@ -120,7 +120,7 @@ public class AuthenticationService {
 				var accessToken = jwtService.generateToken(user);
 				revokeAllUserTokens(user);
 				saveUserToken(user, accessToken);
-				var authResponse = AuthenticationResponse.builder().accessToken(accessToken).refreshToken(refreshToken)
+				var authResponse = AuthenticationResponseDTO.builder().accessToken(accessToken).refreshToken(refreshToken)
 						.build();
 				new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
 			}

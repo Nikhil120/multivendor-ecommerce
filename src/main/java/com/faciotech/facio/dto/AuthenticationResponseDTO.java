@@ -1,4 +1,4 @@
-package com.faciotech.facio.util;
+package com.faciotech.facio.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthenticationResponse {
+public class AuthenticationResponseDTO {
 
   @JsonProperty("access_token")
   private String accessToken;

@@ -1,4 +1,4 @@
-package com.faciotech.facio.entity;
+package com.faciotech.facio.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -6,9 +6,11 @@ import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.faciotech.facio.dto.CategoryDTO;
+import com.faciotech.facio.entity.Product;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,46 +20,47 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "category")
 @Data
-@NoArgsConstructor
+@Builder
 @AllArgsConstructor
-public class Category {
-	@Id
-	@GeneratedValue
+@NoArgsConstructor
+public class ProductDTO {
+
 	private Integer id;
 
-	@Column(nullable = false, unique = true, length = 30)
-	private String categoryId;
+	private String productCode;
 
-	@Column(nullable = false, length = 40)
 	private String name;
 
-	@Column(nullable = true, length = 200)
-	private String description;
+	private double maxPrice;
 
-	@Column(nullable = false)
-	private int productCount = 0;
+	private double salesPrice;
 
-	@ManyToOne
-	@JoinColumn(name = "business_id")
-	private Business business;
+	private double costPrice;
 
-	@OneToMany(mappedBy = "category")
-	private List<Product> products;
+	private CategoryDTO categoryDTO;
 
-	@CreationTimestamp
+	private BusinessDTO businessDTO;
+
+//	private List<ProductOption> productOptions;
+//
+//	private List<ProductVariant> productVariants;
+//
+//	private List<ProductImage> productImages;
+
+	private boolean haveProductVariant;
+
+	private boolean isActive;
+
 	private LocalDateTime createdAt;
 
-	@UpdateTimestamp
 	private LocalDateTime updatedAt;
-
-	public Category(CategoryDTO categoryDTO) {
-		this.name = categoryDTO.getName();
-		this.description = categoryDTO.getName();
+	
+	public ProductDTO(Product product) {
+		
 	}
 }

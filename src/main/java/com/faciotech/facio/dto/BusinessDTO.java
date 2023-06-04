@@ -39,9 +39,9 @@ public class BusinessDTO {
 
 	private List<UserDTO> users;
 
-//	private List<Category> categories;
+	private List<CategoryDTO> categories;
 //
-//	private List<Product> products;
+	private List<ProductDTO> products;
 
 	private String description;
 

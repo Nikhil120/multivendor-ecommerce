@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.faciotech.facio.entity.Category;
+import com.faciotech.facio.dto.CategoryDTO;
 import com.faciotech.facio.service.CategoryService;
 
 import lombok.RequiredArgsConstructor;
@@ -26,17 +26,18 @@ public class CategoryController {
 	private final CategoryService categoryService;
 
 	@PostMapping
-	public ResponseEntity<Category> addCategory(@RequestBody Category category) {
+	public ResponseEntity<CategoryDTO> addCategory(@RequestBody CategoryDTO categoryDTO) {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
-		categoryService.addCategory(email, category);
-		return new ResponseEntity<Category>(category, HttpStatus.OK);
+		CategoryDTO newCategoryDTO = categoryService.addCategory(email, categoryDTO);
+		return new ResponseEntity<CategoryDTO>(newCategoryDTO, HttpStatus.OK);
 	}
 
 	@PostMapping("/{id}")
-	public ResponseEntity<Category> updateCategory(@PathVariable("id") Integer id, @RequestBody Category category) {
+	public ResponseEntity<CategoryDTO> updateCategory(@PathVariable("id") Integer id,
+			@RequestBody CategoryDTO categoryDTO) {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
-		Category updatedCategory = categoryService.updateCategory(email, id, category);
-		return new ResponseEntity<Category>(updatedCategory, HttpStatus.OK);
+		CategoryDTO updatedCategoryDTO = categoryService.updateCategory(email, id, categoryDTO);
+		return new ResponseEntity<CategoryDTO>(updatedCategoryDTO, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{id}")
@@ -47,25 +48,24 @@ public class CategoryController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Category> getCategoryDetails(@PathVariable("id") Integer id) {
+	public ResponseEntity<CategoryDTO> getCategoryDetails(@PathVariable("id") Integer id) {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
-		Category category = categoryService.getCategoryDetails(email, id);
+		CategoryDTO categoryDTO = categoryService.getCategoryDetails(email, id);
 
-		if (category == null) {
-			return new ResponseEntity<Category>(category, HttpStatus.NOT_FOUND);
+		if (categoryDTO == null) {
+			return new ResponseEntity<CategoryDTO>(categoryDTO, HttpStatus.NOT_FOUND);
 		}
 
-		return new ResponseEntity<Category>(category, HttpStatus.OK);
+		return new ResponseEntity<CategoryDTO>(categoryDTO, HttpStatus.OK);
 	}
 
 	@GetMapping("/all")
 	public ResponseEntity<HashMap<String, Object>> getAllCategory() {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
-		Collection<Category> categoryList = categoryService.getAllCategory(email);
+		Collection<CategoryDTO> categoryDTOList = categoryService.getAllCategory(email);
 		HashMap<String, Object> data = new HashMap<>();
-//		System.out.println(data);
-		data.put("count", categoryList.size());
-		data.put("data", categoryList);
+		data.put("count", categoryDTOList.size());
+		data.put("data", categoryDTOList);
 		return new ResponseEntity<HashMap<String, Object>>(data, HttpStatus.OK);
 	}
 }

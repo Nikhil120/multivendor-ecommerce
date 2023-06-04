@@ -1,5 +1,6 @@
 package com.faciotech.facio.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -7,6 +8,7 @@ import java.util.Random;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.faciotech.facio.dto.CategoryDTO;
 import com.faciotech.facio.entity.Business;
 import com.faciotech.facio.entity.Category;
 import com.faciotech.facio.entity.User;
@@ -25,17 +27,21 @@ public class CategoryService {
 	private final UserRepository userRepository;
 	private final CategoryRepository categoryRepository;
 
-	public void addCategory(String email, Category category) {
+	public CategoryDTO addCategory(String email, CategoryDTO categoryDTO) {
 		User user = userRepository.findByEmail(email).get();
 		Business business = user.getBusiness();
+
+		Category category = new Category(categoryDTO);
 
 		category.setCategoryId(generateCategoryId());
 		category.setBusiness(business);
 
 		categoryRepository.save(category);
+
+		return new CategoryDTO(category);
 	}
 
-	public Category updateCategory(String email, int categoryId, Category newCategory) {
+	public CategoryDTO updateCategory(String email, int categoryId, CategoryDTO categoryDTO) {
 		User user = userRepository.findByEmail(email).get();
 		Business business = user.getBusiness();
 		Optional<Category> optionalCategory = categoryRepository.findByBusinessAndCategory(business.getId(),
@@ -47,16 +53,15 @@ public class CategoryService {
 
 		Category category = optionalCategory.get();
 
-		category.setName(newCategory.getName());
-		category.setDescription(newCategory.getDescription());
+		category.setName(categoryDTO.getName());
+		category.setDescription(categoryDTO.getDescription());
 
 		categoryRepository.save(category);
 
-		return category;
+		return new CategoryDTO(category);
 	}
 
-	public Category getCategoryDetails(String email, int categoryId) {
-		System.out.println("Debugging");
+	public CategoryDTO getCategoryDetails(String email, int categoryId) {
 		User user = userRepository.findByEmail(email).get();
 		Business business = user.getBusiness();
 		Optional<Category> optionalCategory = categoryRepository.findByBusinessAndCategory(business.getId(),
@@ -66,15 +71,21 @@ public class CategoryService {
 			return null;
 		}
 
-		return optionalCategory.get();
+		return new CategoryDTO(optionalCategory.get());
 	}
 
-	public List<Category> getAllCategory(String email) {
+	public List<CategoryDTO> getAllCategory(String email) {
 		User user = userRepository.findByEmail(email).get();
 		Business business = user.getBusiness();
 		List<Category> categoryList = categoryRepository.findAllCategoryForBusiness(business.getId());
 
-		return categoryList;
+		List<CategoryDTO> categoryDTOList = new ArrayList<>();
+
+		for (Category category : categoryList) {
+			categoryDTOList.add(new CategoryDTO(category));
+		}
+
+		return categoryDTOList;
 	}
 
 	public void deleteCategory(String email, Integer categoryId) {

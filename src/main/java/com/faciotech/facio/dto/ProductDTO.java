@@ -1,6 +1,7 @@
 package com.faciotech.facio.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.faciotech.facio.entity.Product;
 
@@ -31,11 +32,11 @@ public class ProductDTO {
 
 	private BusinessDTO businessDTO;
 
-//	private List<ProductOption> productOptions;
-//
-//	private List<ProductVariant> productVariants;
-//
-//	private List<ProductImage> productImages;
+	private List<ProductOptionDTO> productOptions;
+
+	private List<ProductVariantDTO> productVariants;
+
+	private List<ProductImageDTO> productImages;
 
 	private boolean haveProductVariant;
 
@@ -46,6 +47,16 @@ public class ProductDTO {
 	private LocalDateTime updatedAt;
 
 	public ProductDTO(Product product) {
-
+		this.id = product.getId();
+		this.productCode = product.getProductCode();
+		this.name = product.getName();
+		this.maxPrice = product.getMaxPrice();
+		this.salesPrice = product.getSalesPrice();
+		this.costPrice = product.getCostPrice();
+		this.categoryDTO = new CategoryDTO(product.getCategory());
+		this.haveProductVariant = product.isHaveProductVariant();
+		this.isActive = product.isActive();
+		this.createdAt = product.getCreatedAt();
+		this.updatedAt = product.getUpdatedAt();
 	}
 }

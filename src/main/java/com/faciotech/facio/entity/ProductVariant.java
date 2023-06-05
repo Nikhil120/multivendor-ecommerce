@@ -6,6 +6,8 @@ import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.faciotech.facio.dto.ProductVariantDTO;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -59,4 +61,12 @@ public class ProductVariant {
 
 	@UpdateTimestamp
 	private LocalDateTime updatedAt;
+
+	public ProductVariant(ProductVariantDTO productVariantDTO) {
+		this.sku = productVariantDTO.getSku();
+		this.name = productVariantDTO.getName();
+		this.maxPrice = productVariantDTO.getMaxPrice();
+		this.salesPrice = productVariantDTO.getSalesPrice();
+		this.costPrice = productVariantDTO.getCostPrice();
+	}
 }

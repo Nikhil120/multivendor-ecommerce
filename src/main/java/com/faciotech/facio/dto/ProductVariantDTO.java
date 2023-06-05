@@ -32,7 +32,7 @@ public class ProductVariantDTO {
 
 	private ProductDTO product;
 
-	private List<ProductVariantOptionDTO> optionValueDTOs;
+	private List<ProductVariantOptionDTO> productVariantOptions;
 
 	private List<ProductImageDTO> productImages;
 
@@ -49,10 +49,10 @@ public class ProductVariantDTO {
 		this.costPrice = productVariant.getCostPrice();
 		this.createdAt = productVariant.getCreatedAt();
 		this.updatedAt = productVariant.getUpdatedAt();
-		this.optionValueDTOs = new ArrayList<>();
+		this.productVariantOptions = new ArrayList<>();
 
 		for (ProductVariantOption productVariantOption : productVariant.getProductVariantOptions()) {
-			optionValueDTOs.add(new ProductVariantOptionDTO(productVariantOption));
+			productVariantOptions.add(new ProductVariantOptionDTO(productVariantOption));
 		}
 	}
 }

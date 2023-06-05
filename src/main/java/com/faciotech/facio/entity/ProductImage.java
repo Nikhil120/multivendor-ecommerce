@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.faciotech.facio.dto.ProductImageDTO;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -42,4 +44,8 @@ public class ProductImage {
 
 	@UpdateTimestamp
 	private LocalDateTime updatedAt;
+
+	public ProductImage(ProductImageDTO productImageDTO) {
+		this.url = productImageDTO.getUrl();
+	}
 }

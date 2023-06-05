@@ -1,5 +1,6 @@
 package com.faciotech.facio.service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -9,6 +10,12 @@ import java.util.Set;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.faciotech.facio.dto.ProductDTO;
+import com.faciotech.facio.dto.ProductImageDTO;
+import com.faciotech.facio.dto.ProductOptionDTO;
+import com.faciotech.facio.dto.ProductOptionValueDTO;
+import com.faciotech.facio.dto.ProductVariantDTO;
+import com.faciotech.facio.dto.ProductVariantOptionDTO;
 import com.faciotech.facio.entity.Business;
 import com.faciotech.facio.entity.Category;
 import com.faciotech.facio.entity.Product;
@@ -42,100 +49,149 @@ public class ProductService {
 	private final ProductVariantOptionRespository productVariantOptionRespository;
 	private final ProductImageRepository productImageRepository;
 
-	public void addProduct(String email, Product product) {
+	public ProductDTO addProduct(String email, ProductDTO productDTO) {
 		User user = userRepository.findByEmail(email).get();
 		Business business = user.getBusiness();
+		Optional<Category> optionalCategory = categoryRepository.findById(productDTO.getCategory().getId());
+		Category category = optionalCategory.get();
 
+		if (optionalCategory.isEmpty()) {
+			return null;
+		}
+
+		Product product = new Product(productDTO);
 		product.setProductCode(generateProductId());
+		product.setCategory(category);
 		product.setBusiness(business);
 
 		productRespository.save(product);
 
-		Optional<Category> optionalCategory = categoryRepository.findById(product.getCategory().getId());
+		int count = category.getProductCount();
+		category.setProductCount(count + 1);
 
-		if (optionalCategory.isPresent()) {
-			Category category = optionalCategory.get();
-			int count = category.getProductCount();
-			System.out.println("Count" + count);
-			category.setProductCount(count + 1);
+		categoryRepository.save(category);
 
-			categoryRepository.save(category);
-		}
-
+		return new ProductDTO(product);
 	}
 
-	public Product getProductDetails(String email, Integer productId) {
+	public Optional<Product> getProduct(String email, Integer productId) {
 		User user = userRepository.findByEmail(email).get();
 		Business business = user.getBusiness();
 		Optional<Product> optionalProduct = productRespository.findByBusinessAndProduct(business.getId(), productId);
+
+		return optionalProduct;
+	}
+
+	public ProductDTO getProductDetails(String email, Integer productId) {
+		Optional<Product> optionalProduct = getProduct(email, productId);
+
+		if (optionalProduct.isEmpty()) {
+			return null;
+		}
+		Product product = optionalProduct.get();
+
+		ProductDTO productDTO = new ProductDTO(product);
+		productDTO.setProductOptions(product.getProductOptions());
+		productDTO.setProductVariants(product.getProductVariants());
+		return productDTO;
+	}
+
+	public ProductDTO updateProduct(String email, Integer productId, ProductDTO productDTO) {
+		Optional<Product> optionalProduct = getProduct(email, productId);
 
 		if (optionalProduct.isEmpty()) {
 			return null;
 		}
 
-		System.out.println(optionalProduct.get().getCategory().getName());
+		Optional<Category> optionalCategory = categoryRepository.findById(productDTO.getCategory().getId());
+		Category category = optionalCategory.get();
 
-		return optionalProduct.get();
-	}
+		if (optionalCategory.isEmpty()) {
+			return null;
+		}
 
-	public void updateProduct(String email, Integer productId, Product product) {
-		Product myProduct = getProductDetails(email, productId);
-
-		product.setId(productId);
-		product.setProductCode(myProduct.getProductCode());
-		product.setBusiness(myProduct.getBusiness());
+		Product product = optionalProduct.get();
+		product.setName(productDTO.getName());
+		product.setMaxPrice(productDTO.getMaxPrice());
+		product.setSalesPrice(productDTO.getSalesPrice());
+		product.setCostPrice(productDTO.getCostPrice());
+		product.setCategory(category);
 
 		productRespository.save(product);
+
+		return new ProductDTO(product);
 	}
 
-	public void deleteProduct(String email, Integer productId) {
-		Product product = getProductDetails(email, productId);
+	public Boolean deleteProduct(String email, Integer productId) {
+		Optional<Product> optionalProduct = getProduct(email, productId);
 
-		productRespository.delete(product);
+		if (optionalProduct.isEmpty()) {
+			return false;
+		}
+
+		productRespository.delete(optionalProduct.get());
+		return true;
 	}
 
-	public List<Product> getAllProducts(String email) {
+	public List<ProductDTO> getAllProducts(String email) {
 		User user = userRepository.findByEmail(email).get();
 		Business business = user.getBusiness();
-		List<Product> categoryList = productRespository.findAllProductForBusiness(business.getId());
+		List<Product> productList = productRespository.findAllProductForBusiness(business.getId());
 
-		return categoryList;
-	}
+		List<ProductDTO> productDTOList = new ArrayList<>();
 
-	public void addProductOptions(String email, Integer productId, ProductOption productOption) {
-		Product product = getProductDetails(email, productId);
-
-		if (product != null) {
-			productOption.setProduct(product);
-			productOptionRespository.save(productOption);
-
-			for (ProductOptionValue productOptionValue : productOption.getProductOptionValues()) {
-				productOptionValue.setProductOption(productOption);
-				productOptionValueRespository.save(productOptionValue);
-			}
+		for (Product product : productList) {
+			productDTOList.add(new ProductDTO(product));
 		}
+
+		return productDTOList;
 	}
 
-	public void updateProductOption(String email, Integer productId, Integer productOptionId,
-			ProductOption productOption) {
-		Product product = getProductDetails(email, productId);
+	public ProductOptionDTO addProductOptions(String email, Integer productId, ProductOptionDTO productOptionDTO) {
+		Optional<Product> optionalProduct = getProduct(email, productId);
+
+		if (optionalProduct.isEmpty()) {
+			return null;
+		}
+
+		ProductOption productOption = new ProductOption(productOptionDTO);
+
+		productOption.setProduct(optionalProduct.get());
+		productOptionRespository.save(productOption);
+
+		for (ProductOptionValueDTO productOptionValueDTO : productOptionDTO.getProductOptionValues()) {
+			ProductOptionValue productOptionValue = new ProductOptionValue(productOption, productOptionValueDTO);
+			productOptionValueRespository.save(productOptionValue);
+		}
+
+		return new ProductOptionDTO(productOption);
+	}
+
+	public Boolean updateProductOption(String email, Integer productId, Integer productOptionId,
+			ProductOptionDTO productOptionDTO) {
+		Optional<Product> optionalProduct = getProduct(email, productId);
+
+		if (optionalProduct.isEmpty()) {
+			return false;
+		}
+		Product product = optionalProduct.get();
 
 		ProductOption myProductOption = null;
 
-		for (ProductOption productOption2 : product.getProductOptions()) {
-			if (productOption2.getId().equals(productOptionId)) {
-				myProductOption = productOption2;
+		for (ProductOption productOption : product.getProductOptions()) {
+			if (productOption.getId().equals(productOptionId)) {
+				myProductOption = productOption;
 				break;
 			}
 		}
 
-		myProductOption.setName(productOption.getName());
+		myProductOption.setName(productOptionDTO.getName());
 		productOptionRespository.save(myProductOption);
 
 		Set<String> values = new HashSet<String>();
 
-		for (ProductOptionValue productOptionValue : productOption.getProductOptionValues()) {
-			values.add(productOptionValue.getName());
+		for (ProductOptionValueDTO productOptionValueDTO : productOptionDTO.getProductOptionValues()) {
+			values.add(productOptionValueDTO.getName());
 		}
 
 		for (ProductOptionValue productOptionValue : myProductOption.getProductOptionValues()) {
@@ -153,10 +209,13 @@ public class ProductService {
 			productOptionValueRespository.save(productOptionValue);
 		}
 
+		return true;
 	}
 
 	public void deleteProductOption(String email, Integer productId, Integer productOptionId) {
-		Product product = getProductDetails(email, productId);
+		Optional<Product> optionalProduct = getProduct(email, productId);
+
+		Product product = optionalProduct.get();
 
 		for (ProductOption productOption : product.getProductOptions()) {
 			if (productOption.getId().equals(productOptionId)) {
@@ -166,77 +225,134 @@ public class ProductService {
 		}
 	}
 
-	public void addProductVariant(String email, Integer productId, ProductVariant productVariant) {
-		Product product = getProductDetails(email, productId);
+	public void addProductVariant(String email, Integer productId, ProductVariantDTO productVariantDTO) {
+		Optional<Product> optionalProduct = getProduct(email, productId);
+		Product product = optionalProduct.get();
+		ProductVariant productVariant = new ProductVariant(productVariantDTO);
+
 		productVariant.setProduct(product);
-		List<ProductVariantOption> options = productVariant.getProductVariantOptions();
 		productVariantRespository.save(productVariant);
 
-		System.out.println(options.size());
+		List<ProductVariantOptionDTO> options = productVariantDTO.getProductVariantOptions();
 
-		for (ProductVariantOption productVariantOption : options) {
-			System.out.println("Test");
+		for (ProductVariantOptionDTO productVariantOptionDTO : options) {
+			ProductVariantOption productVariantOption = new ProductVariantOption();
+			ProductOption productOption = productOptionRespository.findById(productVariantOptionDTO.getOptionId())
+					.get();
+			ProductOptionValue productOptionValue = productOptionValueRespository
+					.findById(productVariantOptionDTO.getValueId()).get();
 			productVariantOption.setProductVariant(productVariant);
+			productVariantOption.setProductOption(productOption);
+			productVariantOption.setProductOptionValue(productOptionValue);
 			productVariantOptionRespository.save(productVariantOption);
 		}
 	}
 
 	public void updateProductVariant(String email, Integer productId, Integer productVariantId,
-			ProductVariant productVariant) {
-		Product product = getProductDetails(email, productId);
-		System.out.println("productVariantId: " + productVariantId);
+			ProductVariantDTO productVariantDTO) {
+		Optional<Product> optionalProduct = getProduct(email, productId);
+
+		if (optionalProduct.isEmpty()) {
+			return;
+		}
+
+		Product product = optionalProduct.get();
+
+		ProductVariant productVariant = null;
+
 		for (ProductVariant productVariant2 : product.getProductVariants()) {
-			System.out.println("Del: " + productVariant2.getId());
 			if (productVariant2.getId().equals(productVariantId)) {
-				productVariantRespository.delete(productVariant2);
-				System.out.println("Deleted");
+				productVariant = productVariant2;
 				break;
 			}
 		}
 
-		productVariant.setProduct(product);
+		productVariant.setName(productVariantDTO.getName());
+		productVariant.setMaxPrice(productVariantDTO.getMaxPrice());
+		productVariant.setSalesPrice(productVariantDTO.getSalesPrice());
+		productVariant.setCostPrice(productVariantDTO.getCostPrice());
 		productVariantRespository.save(productVariant);
 
-		for (ProductVariantOption productVariantOption : productVariant.getProductVariantOptions()) {
-			productVariantOption.setProductVariant(productVariant);
+		List<ProductVariantOptionDTO> options = productVariantDTO.getProductVariantOptions();
+
+		int i = 0;
+		for (ProductVariantOptionDTO productVariantOptionDTO : options) {
+			ProductVariantOption productVariantOption = productVariant.getProductVariantOptions().get(i);
+			ProductOption productOption = productOptionRespository.findById(productVariantOptionDTO.getOptionId())
+					.get();
+			ProductOptionValue productOptionValue = productOptionValueRespository
+					.findById(productVariantOptionDTO.getValueId()).get();
+			productVariantOption.setProductOption(productOption);
+			productVariantOption.setProductOptionValue(productOptionValue);
 			productVariantOptionRespository.save(productVariantOption);
+			++i;
 		}
 	}
 
 	public void deleteProductVariant(String email, Integer productId, Integer productVariantId) {
-		Product product = getProductDetails(email, productId);
+		Optional<Product> optionalProduct = getProduct(email, productId);
 
-		for (ProductVariant productVariant2 : product.getProductVariants()) {
-			if (productVariant2.getId().equals(productVariantId)) {
-				productVariantRespository.delete(productVariant2);
+		if (optionalProduct.isEmpty()) {
+			return;
+		}
+
+		Product product = optionalProduct.get();
+
+		for (ProductVariant productVariant : product.getProductVariants()) {
+			if (productVariant.getId().equals(productVariantId)) {
+				productVariantRespository.delete(productVariant);
 				break;
 			}
 		}
 	}
 
-	public void addProductImage(String email, Integer productId, ProductImage productImage) {
-		Product product = getProductDetails(email, productId);
+	public void addProductImage(String email, Integer productId, ProductImageDTO productImageDTO) {
+		Optional<Product> optionalProduct = getProduct(email, productId);
 
+		if (optionalProduct.isEmpty()) {
+			return;
+		}
+
+		Product product = optionalProduct.get();
+
+		ProductImage productImage = new ProductImage(productImageDTO);
 		productImage.setProduct(product);
 
 		productImageRepository.save(productImage);
 	}
 
-	public void updateProductImage(String email, Integer productId, Integer productImageId, ProductImage productImage) {
-		Product product = getProductDetails(email, productId);
+	public void updateProductImage(String email, Integer productId, Integer productImageId,
+			ProductImageDTO productImageDTO) {
+		Optional<Product> optionalProduct = getProduct(email, productId);
+
+		if (optionalProduct.isEmpty()) {
+			return;
+		}
+
+		Product product = optionalProduct.get();
+
 		List<ProductImage> productImages = product.getProductImages();
 
-		for (ProductImage productImage2 : productImages) {
-			if (productImage2.getId().equals(productImageId)) {
-				productImage2.setProductVariant(productImage.getProductVariant());
-				productImageRepository.save(productImage2);
+		for (ProductImage productImage : productImages) {
+			if (productImage.getId().equals(productImageId)) {
+				ProductVariant productVariant = productVariantRespository
+						.findById(productImageDTO.getProductVariant().getId()).get();
+				productImage.setProductVariant(productVariant);
+				productImageRepository.save(productImage);
 				break;
 			}
 		}
 	}
 
 	public void deleteProductImage(String email, Integer productId, Integer productImageId) {
-		Product product = getProductDetails(email, productId);
+		Optional<Product> optionalProduct = getProduct(email, productId);
+
+		if (optionalProduct.isEmpty()) {
+			return;
+		}
+
+		Product product = optionalProduct.get();
+
 		List<ProductImage> productImages = product.getProductImages();
 
 		for (ProductImage productImage2 : productImages) {

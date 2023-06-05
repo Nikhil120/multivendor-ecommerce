@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.faciotech.facio.entity.Product;
-import com.faciotech.facio.entity.ProductImage;
-import com.faciotech.facio.entity.ProductOption;
-import com.faciotech.facio.entity.ProductVariant;
+import com.faciotech.facio.dto.ProductDTO;
+import com.faciotech.facio.dto.ProductImageDTO;
+import com.faciotech.facio.dto.ProductOptionDTO;
+import com.faciotech.facio.dto.ProductVariantDTO;
 import com.faciotech.facio.service.ProductService;
 
 import lombok.RequiredArgsConstructor;
@@ -29,30 +29,30 @@ public class ProductController {
 	private final ProductService productService;
 
 	@PostMapping
-	public ResponseEntity<Product> addProduct(@RequestBody Product product) {
+	public ResponseEntity<ProductDTO> addProduct(@RequestBody ProductDTO productDTO) {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
-		productService.addProduct(email, product);
-		return new ResponseEntity<Product>(product, HttpStatus.OK);
+		ProductDTO productDTO2 = productService.addProduct(email, productDTO);
+		return new ResponseEntity<ProductDTO>(productDTO2, HttpStatus.OK);
 	}
 
 	@GetMapping("/{product_id}")
-	public ResponseEntity<Product> getProductDetails(@PathVariable("product_id") Integer productId) {
+	public ResponseEntity<ProductDTO> getProductDetails(@PathVariable("product_id") Integer productId) {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
-		Product product = productService.getProductDetails(email, productId);
+		ProductDTO productDTO = productService.getProductDetails(email, productId);
 
-		if (product == null) {
-			return new ResponseEntity<Product>(product, HttpStatus.NOT_FOUND);
+		if (productDTO == null) {
+			return new ResponseEntity<ProductDTO>(productDTO, HttpStatus.NOT_FOUND);
 		}
 
-		return new ResponseEntity<Product>(product, HttpStatus.OK);
+		return new ResponseEntity<ProductDTO>(productDTO, HttpStatus.OK);
 	}
 
 	@PostMapping("/{product_id}")
-	public ResponseEntity<Product> updateProduct(@PathVariable("product_id") Integer productId,
-			@RequestBody Product product) {
+	public ResponseEntity<ProductDTO> updateProduct(@PathVariable("product_id") Integer productId,
+			@RequestBody ProductDTO productDTO) {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
-		productService.updateProduct(email, productId, product);
-		return new ResponseEntity<Product>(product, HttpStatus.OK);
+		productService.updateProduct(email, productId, productDTO);
+		return new ResponseEntity<ProductDTO>(productDTO, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{product_id}")
@@ -65,27 +65,26 @@ public class ProductController {
 	@GetMapping("/all")
 	public ResponseEntity<HashMap<String, Object>> getAllProduct() {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
-		List<Product> productList = productService.getAllProducts(email);
+		List<ProductDTO> productDTOList = productService.getAllProducts(email);
 		HashMap<String, Object> data = new HashMap<>();
-//		System.out.println(data);
-		data.put("count", productList.size());
-		data.put("data", productList);
+		data.put("count", productDTOList.size());
+		data.put("data", productDTOList);
 		return new ResponseEntity<HashMap<String, Object>>(data, HttpStatus.OK);
 	}
 
 	@PostMapping("{product_id}/options")
 	public ResponseEntity<String> addProductOption(@PathVariable("product_id") Integer productId,
-			@RequestBody ProductOption productOption) {
+			@RequestBody ProductOptionDTO productOptionDTO) {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
-		productService.addProductOptions(email, productId, productOption);
+		productService.addProductOptions(email, productId, productOptionDTO);
 		return ResponseEntity.ok("Product option added successfully.");
 	}
 
 	@PostMapping("{product_id}/options/{option_id}")
 	public ResponseEntity<String> updateProductOption(@PathVariable("product_id") Integer productId,
-			@PathVariable("option_id") Integer optionId, @RequestBody ProductOption productOption) {
+			@PathVariable("option_id") Integer optionId, @RequestBody ProductOptionDTO productOptionDTO) {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
-		productService.updateProductOption(email, productId, optionId, productOption);
+		productService.updateProductOption(email, productId, optionId, productOptionDTO);
 		return ResponseEntity.ok("Product option updated successfully.");
 	}
 
@@ -99,17 +98,17 @@ public class ProductController {
 
 	@PostMapping("{product_id}/variants")
 	public ResponseEntity<String> addProductVariant(@PathVariable("product_id") Integer productId,
-			@RequestBody ProductVariant productVariant) {
+			@RequestBody ProductVariantDTO productVariantDTO) {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
-		productService.addProductVariant(email, productId, productVariant);
+		productService.addProductVariant(email, productId, productVariantDTO);
 		return ResponseEntity.ok("Product variant added successfully.");
 	}
 
 	@PostMapping("{product_id}/variants/{variant_id}")
 	public ResponseEntity<String> updateProductVariant(@PathVariable("product_id") Integer productId,
-			@PathVariable("variant_id") Integer variantId, @RequestBody ProductVariant productVariant) {
+			@PathVariable("variant_id") Integer variantId, @RequestBody ProductVariantDTO productVariantDTO) {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
-		productService.updateProductVariant(email, productId, variantId, productVariant);
+		productService.updateProductVariant(email, productId, variantId, productVariantDTO);
 		return ResponseEntity.ok("Product variant updated successfully.");
 	}
 
@@ -123,17 +122,17 @@ public class ProductController {
 
 	@PostMapping("{product_id}/images")
 	public ResponseEntity<String> addProductImage(@PathVariable("product_id") Integer productId,
-			@RequestBody ProductImage productImage) {
+			@RequestBody ProductImageDTO productImageDTO) {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
-		productService.addProductImage(email, productId, productImage);
+		productService.addProductImage(email, productId, productImageDTO);
 		return ResponseEntity.ok("Product image added successfully.");
 	}
 
 	@PostMapping("{product_id}/images/{image_id}")
 	public ResponseEntity<String> updateProductVariant(@PathVariable("product_id") Integer productId,
-			@PathVariable("image_id") Integer imageId, @RequestBody ProductImage productImage) {
+			@PathVariable("image_id") Integer imageId, @RequestBody ProductImageDTO productImageDTO) {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
-		productService.updateProductImage(email, productId, imageId, productImage);
+		productService.updateProductImage(email, productId, imageId, productImageDTO);
 		return ResponseEntity.ok("Product image updated successfully.");
 	}
 

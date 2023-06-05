@@ -1,9 +1,12 @@
 package com.faciotech.facio.dto;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.faciotech.facio.entity.Product;
+import com.faciotech.facio.entity.ProductOption;
+import com.faciotech.facio.entity.ProductVariant;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,9 +31,9 @@ public class ProductDTO {
 
 	private double costPrice;
 
-	private CategoryDTO categoryDTO;
+	private CategoryDTO category;
 
-	private BusinessDTO businessDTO;
+	private BusinessDTO business;
 
 	private List<ProductOptionDTO> productOptions;
 
@@ -53,10 +56,33 @@ public class ProductDTO {
 		this.maxPrice = product.getMaxPrice();
 		this.salesPrice = product.getSalesPrice();
 		this.costPrice = product.getCostPrice();
-		this.categoryDTO = new CategoryDTO(product.getCategory());
+		this.category = new CategoryDTO(product.getCategory());
 		this.haveProductVariant = product.isHaveProductVariant();
 		this.isActive = product.isActive();
 		this.createdAt = product.getCreatedAt();
 		this.updatedAt = product.getUpdatedAt();
+	}
+
+	public void setProductOptions(List<ProductOption> productOptions) {
+		List<ProductOptionDTO> productOptionDTOList = new ArrayList<>();
+
+		for (ProductOption productOption : productOptions) {
+			ProductOptionDTO productOptionDTO = new ProductOptionDTO(productOption);
+			productOptionDTO.setProductOptionValues(productOption.getProductOptionValues());
+			productOptionDTOList.add(productOptionDTO);
+		}
+
+		this.productOptions = productOptionDTOList;
+	}
+
+	public void setProductVariants(List<ProductVariant> productVariants) {
+		List<ProductVariantDTO> productVariantDTOList = new ArrayList<>();
+
+		for (ProductVariant productVariant : productVariants) {
+			ProductVariantDTO productVariantDTO = new ProductVariantDTO(productVariant);
+			productVariantDTOList.add(productVariantDTO);
+		}
+
+		this.productVariants = productVariantDTOList;
 	}
 }

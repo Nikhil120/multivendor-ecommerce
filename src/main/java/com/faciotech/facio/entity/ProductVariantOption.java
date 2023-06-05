@@ -42,4 +42,5 @@ public class ProductVariantOption {
 
 	@UpdateTimestamp
 	private LocalDateTime updatedAt;
+
 }

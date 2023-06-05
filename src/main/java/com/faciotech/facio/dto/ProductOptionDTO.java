@@ -1,9 +1,11 @@
 package com.faciotech.facio.dto;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.faciotech.facio.entity.ProductOption;
+import com.faciotech.facio.entity.ProductOptionValue;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,9 +33,22 @@ public class ProductOptionDTO {
 	private LocalDateTime updatedAt;
 
 	public ProductOptionDTO(ProductOption productOption) {
-		this.id = product.getId();
+		this.id = productOption.getId();
 		this.name = productOption.getName();
 		this.createdAt = productOption.getCreatedAt();
 		this.updatedAt = productOption.getUpdatedAt();
+	}
+
+	public void setProductOptionValues(List<ProductOptionValue> productOptionValues) {
+		List<ProductOptionValueDTO> productOptionValueDTOList = new ArrayList<>();
+
+		for (ProductOptionValue productOptionValue : productOptionValues) {
+			ProductOptionValueDTO productOptionValueDTO = new ProductOptionValueDTO(productOptionValue);
+
+			productOptionValueDTOList.add(productOptionValueDTO);
+
+		}
+
+		this.productOptionValues = productOptionValueDTOList;
 	}
 }

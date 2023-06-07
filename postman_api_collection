@@ -1,0 +1,836 @@
+{
+	"info": {
+		"_postman_id": "c31544ad-d97f-453a-8232-8d95e01dbec3",
+		"name": "Facio",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "UserAuthentication",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstname\": \"testing\",\r\n    \"lastname\": \"12345\",\r\n    \"email\": \"testing123456@yopmail.com\",\r\n    \"password\": \"teSting@123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/auth/register",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"testing123456@yopmail.com\",\r\n    \"password\": \"teSting@123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/auth/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "VerfiyEmail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/auth/verify?email=testing1@yopmail.com&code=���^�",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"verify"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "testing1@yopmail.com"
+								},
+								{
+									"key": "code",
+									"value": "���^�"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RefreshToken",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0aW5nMTIzNDVAeW9wbWFpbC5jb20iLCJpYXQiOjE2ODU3OTgwMjgsImV4cCI6MTY4NjQwMjgyOH0.EomZjYJSWAVDQSfK5zHgyTwyNsAAaU8T6U4dxTVsCaw",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/v1/auth/refresh-token",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"refresh-token"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Business",
+			"item": [
+				{
+					"name": "UpdateBusinessDetails",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 152,\r\n    \"businessCode\": \"bus_Z6XZ_1685876151005\",\r\n    \"name\": \"My Grocery Store\",\r\n    \"email\": \"grocey@mail.com\",\r\n    \"phoneNumber1\": \"+34563459\",\r\n    \"phoneNumber2\": \"+23456550\",\r\n    \"logo\": \"logo1234.png\",\r\n    \"coverImage\": \"cover7654.png\",\r\n    \"address\": {\r\n        \"id\": 152,\r\n        \"addressline\": \"B no. 4\",\r\n        \"pinCode\": 110053,\r\n        \"city\": \"New Delhi\",\r\n        \"state\": \"Delhi\",\r\n        \"country\": \"India\",\r\n        \"googleMapLink\": \"https://www.google.com/maps/1234\",\r\n        \"business\": null,\r\n        \"createdAt\": \"2023-06-04T16:25:51.013518\",\r\n        \"updatedAt\": \"2023-06-04T17:47:56.084694\"\r\n    },\r\n    \"businessType\": \"DISTRIBUTOR\",\r\n    \"users\": null,\r\n    \"categories\": null,\r\n    \"products\": null,\r\n    \"description\": \"My grocery business!!!\",\r\n    \"isEmailVerified\": false,\r\n    \"isPhone1Verified\": false,\r\n    \"isPhone2Verified\": false,\r\n    \"isActive\": true,\r\n    \"isVerified\": false,\r\n    \"createdAt\": \"2023-06-04T16:25:51.021548\",\r\n    \"updatedAt\": \"2023-06-04T17:47:56.084694\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/business/152",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"business",
+								"152"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetBusinessDetails",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/v1/business",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"business"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Category",
+			"item": [
+				{
+					"name": "GetAllCategories",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/v1/category/all",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"category",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddNewCategory",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Snacks2\",\r\n    \"description\": \"Snacks2 Store\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/category",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetCategoryDetails",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/v1/category/802",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"category",
+								"802"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateCategory",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Biscuits\",\r\n    \"description\": \"Biscuit Store\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/category/802",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"category",
+								"802"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteCategory",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/v1/category/802",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"category",
+								"802"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Product",
+			"item": [
+				{
+					"name": "GetAllProducts",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/v1/product/all",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"product",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddNewProduct",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Lays\",\r\n    \"maxPrice\": 20,\r\n    \"costPrice\": 16,\r\n    \"salesPrice\": 20,\r\n    \"category\": {\r\n        \"id\": 803\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/product",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetProductDetails",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/v1/product/552",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"product",
+								"552"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateProduct",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 552,\r\n    \"productCode\": \"prd_FODD_1685963212994\",\r\n    \"name\": \"Lays\",\r\n    \"maxPrice\": 40.0,\r\n    \"salesPrice\": 40.0,\r\n    \"costPrice\": 36.0,\r\n    \"category\": {\r\n        \"id\": 852,\r\n        \"categoryId\": \"cat_PLW7_1685962706778\",\r\n        \"name\": \"Snacks\",\r\n        \"description\": \"Snacks\",\r\n        \"productCount\": 1,\r\n        \"business\": null,\r\n        \"products\": null,\r\n        \"createdAt\": \"2023-06-05T16:28:26.779482\",\r\n        \"updatedAt\": \"2023-06-05T16:36:53.073443\"\r\n    },\r\n    \"business\": null,\r\n    \"productOptions\": null,\r\n    \"productVariants\": null,\r\n    \"productImages\": null,\r\n    \"haveProductVariant\": false,\r\n    \"createdAt\": \"2023-06-05T16:36:53.053749\",\r\n    \"updatedAt\": \"2023-06-05T16:36:53.053749\",\r\n    \"active\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/product/552",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"product",
+								"552"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteProduct",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/product/152",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"product",
+								"152"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddProductOption",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Color\",\r\n    \"productOptionValues\": [\r\n        {\r\n            \"name\": \"Black\"\r\n        },\r\n        {\r\n            \"name\": \"Red\"\r\n        },\r\n        {\r\n            \"name\": \"Blue\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/product/552/options",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"product",
+								"552",
+								"options"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateProductOption",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n            \"id\": 602,\r\n            \"name\": \"Flavour\",\r\n            \"product\": null,\r\n            \"productVariantOptions\": null,\r\n            \"productOptionValues\": [\r\n                {\r\n                    \"id\": 702,\r\n                    \"name\": \"Classic\",\r\n                    \"productOption\": null,\r\n                    \"productVariantOptions\": null,\r\n                    \"createdAt\": \"2023-06-07T20:39:47.975364\",\r\n                    \"updatedAt\": \"2023-06-07T20:39:47.975364\"\r\n                },\r\n                {\r\n                    \"id\": 703,\r\n                    \"name\": \"Tangy Tomato\",\r\n                    \"productOption\": null,\r\n                    \"productVariantOptions\": null,\r\n                    \"createdAt\": \"2023-06-07T20:39:47.977996\",\r\n                    \"updatedAt\": \"2023-06-07T20:39:47.977996\"\r\n                },\r\n                {\r\n                    \"id\": 704,\r\n                    \"name\": \"Pudina\",\r\n                    \"productOption\": null,\r\n                    \"productVariantOptions\": null,\r\n                    \"createdAt\": \"2023-06-07T20:39:47.977996\",\r\n                    \"updatedAt\": \"2023-06-07T20:39:47.977996\"\r\n                }\r\n            ],\r\n            \"createdAt\": \"2023-06-07T20:39:47.969315\",\r\n            \"updatedAt\": \"2023-06-07T20:39:47.969315\"\r\n        }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/product/552/options/652",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"product",
+								"552",
+								"options",
+								"652"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteProductOption",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/product/552/options/504",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"product",
+								"552",
+								"options",
+								"504"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddProductVariant",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Lays Black L\",\r\n    \"maxPrice\": 39.0,\r\n    \"salesPrice\": 29.0,\r\n    \"costPrice\": 19.0,\r\n    \"productVariantOptions\": [\r\n        {\r\n            \"optionId\": 452,\r\n            \"valueId\": 454\r\n        },\r\n        {\r\n            \"optionId\": 504,\r\n            \"valueId\": 509\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/product/552/variants",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"product",
+								"552",
+								"variants"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateProductVariant",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1654,\r\n    \"sku\": null,\r\n    \"name\": \"Lays\",\r\n    \"maxPrice\": 59.0,\r\n    \"salesPrice\": 49.0,\r\n    \"costPrice\": 39.0,\r\n    \"product\": null,\r\n    \"productVariantOptions\": [\r\n        {\r\n            \"optionId\": 452,\r\n            \"optionName\": \"Size\",\r\n            \"valueId\": 452,\r\n            \"valueName\": \"Medium\",\r\n            \"createdAt\": \"2023-06-06T00:46:39.38323\",\r\n            \"updatedAt\": \"2023-06-06T00:46:39.38323\"\r\n        },\r\n        {\r\n            \"optionId\": 504,\r\n            \"optionName\": \"Color\",\r\n            \"valueId\": 652,\r\n            \"valueName\": \"Blue\",\r\n            \"createdAt\": \"2023-06-06T00:46:39.388357\",\r\n            \"updatedAt\": \"2023-06-06T00:46:39.388357\"\r\n        }\r\n    ],\r\n    \"productImages\": null,\r\n    \"createdAt\": \"2023-06-06T00:46:39.361292\",\r\n    \"updatedAt\": \"2023-06-06T00:46:39.363341\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/product/552/variants/1654",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"product",
+								"552",
+								"variants",
+								"1654"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteProductVariant",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/product/552/variants/1654",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"product",
+								"552",
+								"variants",
+								"1654"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddProductImage",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"url\": \"https://imageio.forbes.com/specials-images/imageserve/5f962df3991e5636a2f68758/2x2.jpg\",\r\n    \"productVariant\": {\r\n        \"id\": 1702\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/product/552/images",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"product",
+								"552",
+								"images"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateProductImage",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n            \"id\": 254,\r\n            \"url\": \"https://imageio.forbes.com/specials-images/imageserve/5f962df3991e5636a2f68758/3x$.jpg\",\r\n            \"product\": null,\r\n            \"productVariant\": {\r\n                \"id\": 1702\r\n            },\r\n            \"createdAt\": \"2023-06-07T21:01:36.445696\",\r\n            \"updatedAt\": \"2023-06-07T21:01:36.445696\"\r\n        },",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/product/552/images/254",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"product",
+								"552",
+								"images",
+								"254"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteProductImage",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/product/552/images/252",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"product",
+								"552",
+								"images",
+								"252"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

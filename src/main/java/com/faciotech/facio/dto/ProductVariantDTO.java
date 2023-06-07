@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.faciotech.facio.entity.ProductImage;
 import com.faciotech.facio.entity.ProductVariant;
 import com.faciotech.facio.entity.ProductVariantOption;
 
@@ -53,6 +54,12 @@ public class ProductVariantDTO {
 
 		for (ProductVariantOption productVariantOption : productVariant.getProductVariantOptions()) {
 			productVariantOptions.add(new ProductVariantOptionDTO(productVariantOption));
+		}
+
+		this.productImages = new ArrayList<>();
+
+		for (ProductImage productImage : productVariant.getProductImages()) {
+			productImages.add(new ProductImageDTO(productImage));
 		}
 	}
 }

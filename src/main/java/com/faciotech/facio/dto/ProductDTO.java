@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.faciotech.facio.entity.Product;
+import com.faciotech.facio.entity.ProductImage;
 import com.faciotech.facio.entity.ProductOption;
 import com.faciotech.facio.entity.ProductVariant;
 
@@ -84,5 +85,16 @@ public class ProductDTO {
 		}
 
 		this.productVariants = productVariantDTOList;
+	}
+
+	public void setProductImages(List<ProductImage> productImages) {
+		List<ProductImageDTO> productImageDTOList = new ArrayList<>();
+
+		for (ProductImage productImage : productImages) {
+			ProductImageDTO productImageDTO = new ProductImageDTO(productImage);
+			productImageDTOList.add(productImageDTO);
+		}
+
+		this.productImages = productImageDTOList;
 	}
 }

@@ -93,6 +93,7 @@ public class ProductService {
 		ProductDTO productDTO = new ProductDTO(product);
 		productDTO.setProductOptions(product.getProductOptions());
 		productDTO.setProductVariants(product.getProductVariants());
+		productDTO.setProductImages(product.getProductImages());
 		return productDTO;
 	}
 
@@ -328,8 +329,16 @@ public class ProductService {
 
 		Product product = optionalProduct.get();
 
+		ProductVariantDTO productVariantDTO = productImageDTO.getProductVariant();
+		ProductVariant productVariant = null;
+
+		if (productVariantDTO != null) {
+			productVariant = productVariantRespository.findById(productVariantDTO.getId()).get();
+		}
+
 		ProductImage productImage = new ProductImage(productImageDTO);
 		productImage.setProduct(product);
+		productImage.setProductVariant(productVariant);
 
 		productImageRepository.save(productImage);
 	}
@@ -348,8 +357,12 @@ public class ProductService {
 
 		for (ProductImage productImage : productImages) {
 			if (productImage.getId().equals(productImageId)) {
-				ProductVariant productVariant = productVariantRespository
-						.findById(productImageDTO.getProductVariant().getId()).get();
+				ProductVariant productVariant = null;
+				if (productImageDTO.getProductVariant() != null) {
+					productVariant = productVariantRespository.findById(productImageDTO.getProductVariant().getId())
+							.get();
+				}
+				productImage.setUrl(productImageDTO.getUrl());
 				productImage.setProductVariant(productVariant);
 				productImageRepository.save(productImage);
 				break;

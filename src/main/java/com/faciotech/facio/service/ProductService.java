@@ -154,14 +154,24 @@ public class ProductService {
 			return null;
 		}
 
+		Product product = optionalProduct.get();
+
 		ProductOption productOption = new ProductOption(productOptionDTO);
 
-		productOption.setProduct(optionalProduct.get());
+		productOption.setProduct(product);
 		productOptionRespository.save(productOption);
 
 		for (ProductOptionValueDTO productOptionValueDTO : productOptionDTO.getProductOptionValues()) {
 			ProductOptionValue productOptionValue = new ProductOptionValue(productOption, productOptionValueDTO);
 			productOptionValueRespository.save(productOptionValue);
+		}
+
+		for (ProductVariant productVariant : product.getProductVariants()) {
+			ProductVariantOption productVariantOption = new ProductVariantOption();
+			productVariantOption.setProductVariant(productVariant);
+			productVariantOption.setProductOption(productOption);
+			productVariantOption.setProductOptionValue(null);
+			productVariantOptionRespository.save(productVariantOption);
 		}
 
 		return new ProductOptionDTO(productOption);
@@ -198,13 +208,16 @@ public class ProductService {
 			if (values.contains(productOptionValue.getName())) {
 				values.remove(productOptionValue.getName());
 			} else {
-				productOptionValueRespository.delete(productOptionValue);
+				if (productOptionValue.getProductVariantOptions().size() == 0) {
+					productOptionValueRespository.delete(productOptionValue);
+				}
 			}
 		}
 
 		for (String value : values) {
 			ProductOptionValue productOptionValue = new ProductOptionValue();
 			productOptionValue.setName(value);
+			productOptionValue.setProductVariantOptions(null);
 			productOptionValue.setProductOption(myProductOption);
 			productOptionValueRespository.save(productOptionValue);
 		}

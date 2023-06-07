@@ -30,8 +30,13 @@ public class ProductVariantOptionDTO {
 	public ProductVariantOptionDTO(ProductVariantOption productVariantOption) {
 		this.optionId = productVariantOption.getProductOption().getId();
 		this.optionName = productVariantOption.getProductOption().getName();
-		this.valueId = productVariantOption.getProductOptionValue().getId();
-		this.valueName = productVariantOption.getProductOptionValue().getName();
+		if (productVariantOption.getProductOptionValue() == null) {
+			this.valueId = null;
+			this.valueName = null;
+		} else {
+			this.valueId = productVariantOption.getProductOptionValue().getId();
+			this.valueName = productVariantOption.getProductOptionValue().getName();
+		}
 		this.createdAt = productVariantOption.getCreatedAt();
 		this.updatedAt = productVariantOption.getUpdatedAt();
 	}

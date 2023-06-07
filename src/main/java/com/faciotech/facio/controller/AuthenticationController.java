@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.faciotech.facio.dto.AuthenticationRequestDTO;
+import com.faciotech.facio.dto.AuthenticationResponseDTO;
 import com.faciotech.facio.dto.UserDTO;
 import com.faciotech.facio.service.AuthenticationService;
 import com.faciotech.facio.service.BusinessService;
@@ -29,11 +30,12 @@ public class AuthenticationController {
 
 	private final AuthenticationService authenticationService;
 	private final BusinessService businessService;
+	private String siteURL = "http://localhost:8080/api/v1/auth";
 
 	@PostMapping("/register")
 	public ResponseEntity<String> register(@RequestBody UserDTO request)
 			throws UnsupportedEncodingException, MessagingException {
-		String responseMessage = authenticationService.register(request, "http://localhost:8080/api/v1/auth");
+		String responseMessage = authenticationService.register(request, siteURL);
 
 		return ResponseEntity.ok(responseMessage);
 	}
@@ -42,7 +44,13 @@ public class AuthenticationController {
 	public ResponseEntity<Object> authenticate(@RequestBody AuthenticationRequestDTO request) {
 		ResponseEntity<Object> responseEntity;
 		try {
-			responseEntity = ResponseEntity.ok(authenticationService.authenticate(request));
+			AuthenticationResponseDTO authenticationResponseDTO = authenticationService.authenticate(request, siteURL);
+			if (authenticationResponseDTO == null) {
+				responseEntity = ResponseEntity.status(HttpStatus.OK)
+						.body("User not verified. Verification email send.");
+			} else {
+				responseEntity = ResponseEntity.ok(authenticationResponseDTO);
+			}
 		} catch (Exception e) {
 			responseEntity = ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid email or password");
 		}

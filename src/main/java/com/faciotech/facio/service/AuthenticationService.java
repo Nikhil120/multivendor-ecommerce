@@ -74,10 +74,18 @@ public class AuthenticationService {
 		return "User already exists.";
 	}
 
-	public AuthenticationResponseDTO authenticate(AuthenticationRequestDTO request) {
+	public AuthenticationResponseDTO authenticate(AuthenticationRequestDTO request, String siteURL)
+			throws UnsupportedEncodingException, MessagingException {
+		User user = repository.findByEmail(request.getEmail()).orElseThrow();
+
+		if (!user.getIsVerified()) {
+			sendVerificationEmail(user, siteURL);
+			return null;
+		}
+
 		authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-		User user = repository.findByEmail(request.getEmail()).orElseThrow();
+
 		var jwtToken = jwtService.generateToken(user);
 		var refreshToken = jwtService.generateRefreshToken(user);
 		revokeAllUserTokens(user);

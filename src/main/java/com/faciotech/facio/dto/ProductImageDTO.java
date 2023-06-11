@@ -32,11 +32,5 @@ public class ProductImageDTO {
 		this.url = productImage.getUrl();
 		this.createdAt = productImage.getCreatedAt();
 		this.updatedAt = productImage.getUpdatedAt();
-
-		if (productImage.getProductVariant() != null) {
-			productVariant = new ProductVariantDTO();
-			productVariant.setId(productImage.getProductVariant().getId());
-			productVariant.setName(productImage.getProductVariant().getName());
-		}
 	}
 }

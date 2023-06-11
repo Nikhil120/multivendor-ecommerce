@@ -260,6 +260,13 @@ public class ProductService {
 			productVariantOption.setProductOptionValue(productOptionValue);
 			productVariantOptionRespository.save(productVariantOption);
 		}
+
+		for (ProductImageDTO productImageDTO : productVariantDTO.getProductImages()) {
+			ProductImage productImage = new ProductImage(productImageDTO);
+			productImage.setProduct(product);
+			productImage.setProductVariant(productVariant);
+			productImageRepository.save(productImage);
+		}
 	}
 
 	public void updateProductVariant(String email, Integer productId, Integer productVariantId,
@@ -301,6 +308,22 @@ public class ProductService {
 			productVariantOptionRespository.save(productVariantOption);
 			++i;
 		}
+
+		i = 0;
+		for (ProductImageDTO productImageDTO : productVariantDTO.getProductImages()) {
+			ProductImage productImage;
+
+			if (i < productVariant.getProductImages().size()) {
+				productImage = productVariant.getProductImages().get(i);
+				productImage.setUrl(productImageDTO.getUrl());
+			} else {
+				productImage = new ProductImage(productImageDTO);
+				productImage.setProduct(product);
+				productImage.setProductVariant(productVariant);
+			}
+			productImageRepository.save(productImage);
+			++i;
+		}
 	}
 
 	public void deleteProductVariant(String email, Integer productId, Integer productVariantId) {
@@ -329,16 +352,16 @@ public class ProductService {
 
 		Product product = optionalProduct.get();
 
-		ProductVariantDTO productVariantDTO = productImageDTO.getProductVariant();
-		ProductVariant productVariant = null;
+//		ProductVariantDTO productVariantDTO = productImageDTO.getProductVariant();
+//		ProductVariant productVariant = null;
 
-		if (productVariantDTO != null) {
-			productVariant = productVariantRespository.findById(productVariantDTO.getId()).get();
-		}
+//		if (productVariantDTO != null) {
+//			productVariant = productVariantRespository.findById(productVariantDTO.getId()).get();
+//		}
 
 		ProductImage productImage = new ProductImage(productImageDTO);
 		productImage.setProduct(product);
-		productImage.setProductVariant(productVariant);
+//		productImage.setProductVariant(productVariant);
 
 		productImageRepository.save(productImage);
 	}
@@ -357,13 +380,13 @@ public class ProductService {
 
 		for (ProductImage productImage : productImages) {
 			if (productImage.getId().equals(productImageId)) {
-				ProductVariant productVariant = null;
-				if (productImageDTO.getProductVariant() != null) {
-					productVariant = productVariantRespository.findById(productImageDTO.getProductVariant().getId())
-							.get();
-				}
+//				ProductVariant productVariant = null;
+//				if (productImageDTO.getProductVariant() != null) {
+//					productVariant = productVariantRespository.findById(productImageDTO.getProductVariant().getId())
+//							.get();
+//				}
 				productImage.setUrl(productImageDTO.getUrl());
-				productImage.setProductVariant(productVariant);
+//				productImage.setProductVariant(productVariant);
 				productImageRepository.save(productImage);
 				break;
 			}

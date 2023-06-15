@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.faciotech.facio.dto.ProductDTO;
-import com.faciotech.facio.dto.ProductImageDTO;
 import com.faciotech.facio.dto.ProductOptionDTO;
 import com.faciotech.facio.dto.ProductVariantDTO;
 import com.faciotech.facio.service.ProductService;
@@ -118,29 +117,5 @@ public class ProductController {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 		productService.deleteProductVariant(email, productId, variantId);
 		return ResponseEntity.ok("Product variant deleted successfully.");
-	}
-
-	@PostMapping("{product_id}/images")
-	public ResponseEntity<String> addProductImage(@PathVariable("product_id") Integer productId,
-			@RequestBody ProductImageDTO productImageDTO) {
-		String email = SecurityContextHolder.getContext().getAuthentication().getName();
-		productService.addProductImage(email, productId, productImageDTO);
-		return ResponseEntity.ok("Product image added successfully.");
-	}
-
-	@PostMapping("{product_id}/images/{image_id}")
-	public ResponseEntity<String> updateProductVariant(@PathVariable("product_id") Integer productId,
-			@PathVariable("image_id") Integer imageId, @RequestBody ProductImageDTO productImageDTO) {
-		String email = SecurityContextHolder.getContext().getAuthentication().getName();
-		productService.updateProductImage(email, productId, imageId, productImageDTO);
-		return ResponseEntity.ok("Product image updated successfully.");
-	}
-
-	@DeleteMapping("{product_id}/images/{image_id}")
-	public ResponseEntity<String> deleteProductImage(@PathVariable("product_id") Integer productId,
-			@PathVariable("image_id") Integer imageId) {
-		String email = SecurityContextHolder.getContext().getAuthentication().getName();
-		productService.deleteProductImage(email, productId, imageId);
-		return ResponseEntity.ok("Product image deleted successfully.");
 	}
 }

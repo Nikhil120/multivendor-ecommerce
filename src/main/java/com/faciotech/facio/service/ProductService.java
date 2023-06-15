@@ -71,7 +71,15 @@ public class ProductService {
 
 		categoryRepository.save(category);
 
-		return new ProductDTO(product);
+		for (ProductImageDTO productImageDTO : productDTO.getProductImages()) {
+			ProductImage productImage = new ProductImage(productImageDTO);
+			productImage.setProduct(product);
+			productImageRepository.save(productImage);
+		}
+
+		ProductDTO savedProductDTO = new ProductDTO(product);
+
+		return savedProductDTO;
 	}
 
 	public Optional<Product> getProduct(String email, Integer productId) {
@@ -120,7 +128,16 @@ public class ProductService {
 
 		productRespository.save(product);
 
-		return new ProductDTO(product);
+		productImageRepository.deleteAll(product.getProductImages());
+
+		for (ProductImageDTO productImageDTO : productDTO.getProductImages()) {
+			ProductImage productImage = new ProductImage(productImageDTO);
+			productImage.setProduct(product);
+			productImageRepository.save(productImage);		}
+
+		ProductDTO savedProductDTO = new ProductDTO(product);
+
+		return savedProductDTO;
 	}
 
 	public Boolean deleteProduct(String email, Integer productId) {
@@ -271,59 +288,8 @@ public class ProductService {
 
 	public void updateProductVariant(String email, Integer productId, Integer productVariantId,
 			ProductVariantDTO productVariantDTO) {
-		Optional<Product> optionalProduct = getProduct(email, productId);
-
-		if (optionalProduct.isEmpty()) {
-			return;
-		}
-
-		Product product = optionalProduct.get();
-
-		ProductVariant productVariant = null;
-
-		for (ProductVariant productVariant2 : product.getProductVariants()) {
-			if (productVariant2.getId().equals(productVariantId)) {
-				productVariant = productVariant2;
-				break;
-			}
-		}
-
-		productVariant.setName(productVariantDTO.getName());
-		productVariant.setMaxPrice(productVariantDTO.getMaxPrice());
-		productVariant.setSalesPrice(productVariantDTO.getSalesPrice());
-		productVariant.setCostPrice(productVariantDTO.getCostPrice());
-		productVariantRespository.save(productVariant);
-
-		List<ProductVariantOptionDTO> options = productVariantDTO.getProductVariantOptions();
-
-		int i = 0;
-		for (ProductVariantOptionDTO productVariantOptionDTO : options) {
-			ProductVariantOption productVariantOption = productVariant.getProductVariantOptions().get(i);
-			ProductOption productOption = productOptionRespository.findById(productVariantOptionDTO.getOptionId())
-					.get();
-			ProductOptionValue productOptionValue = productOptionValueRespository
-					.findById(productVariantOptionDTO.getValueId()).get();
-			productVariantOption.setProductOption(productOption);
-			productVariantOption.setProductOptionValue(productOptionValue);
-			productVariantOptionRespository.save(productVariantOption);
-			++i;
-		}
-
-		i = 0;
-		for (ProductImageDTO productImageDTO : productVariantDTO.getProductImages()) {
-			ProductImage productImage;
-
-			if (i < productVariant.getProductImages().size()) {
-				productImage = productVariant.getProductImages().get(i);
-				productImage.setUrl(productImageDTO.getUrl());
-			} else {
-				productImage = new ProductImage(productImageDTO);
-				productImage.setProduct(product);
-				productImage.setProductVariant(productVariant);
-			}
-			productImageRepository.save(productImage);
-			++i;
-		}
+		deleteProductVariant(email, productId, productVariantId);
+		addProductVariant(email, productId, productVariantDTO);
 	}
 
 	public void deleteProductVariant(String email, Integer productId, Integer productVariantId) {
@@ -338,75 +304,6 @@ public class ProductService {
 		for (ProductVariant productVariant : product.getProductVariants()) {
 			if (productVariant.getId().equals(productVariantId)) {
 				productVariantRespository.delete(productVariant);
-				break;
-			}
-		}
-	}
-
-	public void addProductImage(String email, Integer productId, ProductImageDTO productImageDTO) {
-		Optional<Product> optionalProduct = getProduct(email, productId);
-
-		if (optionalProduct.isEmpty()) {
-			return;
-		}
-
-		Product product = optionalProduct.get();
-
-//		ProductVariantDTO productVariantDTO = productImageDTO.getProductVariant();
-//		ProductVariant productVariant = null;
-
-//		if (productVariantDTO != null) {
-//			productVariant = productVariantRespository.findById(productVariantDTO.getId()).get();
-//		}
-
-		ProductImage productImage = new ProductImage(productImageDTO);
-		productImage.setProduct(product);
-//		productImage.setProductVariant(productVariant);
-
-		productImageRepository.save(productImage);
-	}
-
-	public void updateProductImage(String email, Integer productId, Integer productImageId,
-			ProductImageDTO productImageDTO) {
-		Optional<Product> optionalProduct = getProduct(email, productId);
-
-		if (optionalProduct.isEmpty()) {
-			return;
-		}
-
-		Product product = optionalProduct.get();
-
-		List<ProductImage> productImages = product.getProductImages();
-
-		for (ProductImage productImage : productImages) {
-			if (productImage.getId().equals(productImageId)) {
-//				ProductVariant productVariant = null;
-//				if (productImageDTO.getProductVariant() != null) {
-//					productVariant = productVariantRespository.findById(productImageDTO.getProductVariant().getId())
-//							.get();
-//				}
-				productImage.setUrl(productImageDTO.getUrl());
-//				productImage.setProductVariant(productVariant);
-				productImageRepository.save(productImage);
-				break;
-			}
-		}
-	}
-
-	public void deleteProductImage(String email, Integer productId, Integer productImageId) {
-		Optional<Product> optionalProduct = getProduct(email, productId);
-
-		if (optionalProduct.isEmpty()) {
-			return;
-		}
-
-		Product product = optionalProduct.get();
-
-		List<ProductImage> productImages = product.getProductImages();
-
-		for (ProductImage productImage2 : productImages) {
-			if (productImage2.getId().equals(productImageId)) {
-				productImageRepository.delete(productImage2);
 				break;
 			}
 		}

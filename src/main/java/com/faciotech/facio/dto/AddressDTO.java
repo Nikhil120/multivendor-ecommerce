@@ -1,6 +1,7 @@
 package com.faciotech.facio.dto;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import com.faciotech.facio.entity.Address;
 
@@ -14,7 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddressDTO {
-	private Integer id;
+	private UUID id;
 
 	private String addressline;
 

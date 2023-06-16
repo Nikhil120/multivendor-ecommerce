@@ -1,5 +1,7 @@
 package com.faciotech.facio.controller;
 
+import java.util.UUID;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,7 +31,7 @@ public class BusinessController {
 	}
 
 	@PostMapping("/{id}")
-	public ResponseEntity<BusinessDTO> updateBusiness(@PathVariable("id") String businessId,
+	public ResponseEntity<BusinessDTO> updateBusiness(@PathVariable("id") UUID businessId,
 			@RequestBody BusinessDTO businessDTO) {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 		BusinessDTO updatedBusiness = businessService.updateBusiness(email, businessDTO);

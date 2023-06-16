@@ -2,6 +2,7 @@ package com.faciotech.facio.controller;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,7 @@ public class CategoryController {
 	}
 
 	@PostMapping("/{id}")
-	public ResponseEntity<CategoryDTO> updateCategory(@PathVariable("id") Integer id,
+	public ResponseEntity<CategoryDTO> updateCategory(@PathVariable("id") UUID id,
 			@RequestBody CategoryDTO categoryDTO) {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 		CategoryDTO updatedCategoryDTO = categoryService.updateCategory(email, id, categoryDTO);
@@ -41,14 +42,14 @@ public class CategoryController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<String> deleteCategory(@PathVariable("id") Integer id) {
+	public ResponseEntity<String> deleteCategory(@PathVariable("id") UUID id) {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 		categoryService.deleteCategory(email, id);
 		return ResponseEntity.ok("Category Deleted successfully");
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<CategoryDTO> getCategoryDetails(@PathVariable("id") Integer id) {
+	public ResponseEntity<CategoryDTO> getCategoryDetails(@PathVariable("id") UUID id) {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 		CategoryDTO categoryDTO = categoryService.getCategoryDetails(email, id);
 

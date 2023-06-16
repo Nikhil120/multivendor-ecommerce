@@ -3,6 +3,7 @@ package com.faciotech.facio.dto;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import com.faciotech.facio.entity.ProductImage;
 import com.faciotech.facio.entity.ProductVariant;
@@ -18,8 +19,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductVariantDTO {
-
-	private Integer id;
+	private UUID id;
 
 	private String sku;
 

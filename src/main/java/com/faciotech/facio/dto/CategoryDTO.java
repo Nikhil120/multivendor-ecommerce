@@ -2,6 +2,7 @@ package com.faciotech.facio.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 import com.faciotech.facio.entity.Category;
 
@@ -15,9 +16,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CategoryDTO {
-
-	private Integer id;
-
+	private UUID id;
+	
 	private String categoryId;
 
 	private String name;

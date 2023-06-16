@@ -1,6 +1,7 @@
 package com.faciotech.facio.dto;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import com.faciotech.facio.entity.ProductVariantOption;
 
@@ -15,11 +16,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProductVariantOptionDTO {
 
-	private Integer optionId;
+	private UUID optionId;
 
 	private String optionName;
 
-	private Integer valueId;
+	private UUID valueId;
 
 	private String valueName;
 

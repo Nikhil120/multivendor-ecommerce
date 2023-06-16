@@ -77,8 +77,6 @@ public class BusinessService {
 		Address address = business.getAddress();
 		address.setAddressline(addressDTO.getAddressline());
 
-		System.out.println(addressDTO.getPinCode());
-
 		address.setPinCode(addressDTO.getPinCode());
 		address.setCity(addressDTO.getCity());
 		address.setState(addressDTO.getState());

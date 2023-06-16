@@ -2,6 +2,7 @@ package com.faciotech.facio.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 import com.faciotech.facio.entity.Business;
 import com.faciotech.facio.enums.BusinessTypeEnum;
@@ -16,7 +17,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BusinessDTO {
-	private Integer id;
+	private UUID id;
 
 	private String businessCode;
 

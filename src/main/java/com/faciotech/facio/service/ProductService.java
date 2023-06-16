@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -82,7 +83,7 @@ public class ProductService {
 		return savedProductDTO;
 	}
 
-	public Optional<Product> getProduct(String email, Integer productId) {
+	public Optional<Product> getProduct(String email, UUID productId) {
 		User user = userRepository.findByEmail(email).get();
 		Business business = user.getBusiness();
 		Optional<Product> optionalProduct = productRespository.findByBusinessAndProduct(business.getId(), productId);
@@ -90,7 +91,7 @@ public class ProductService {
 		return optionalProduct;
 	}
 
-	public ProductDTO getProductDetails(String email, Integer productId) {
+	public ProductDTO getProductDetails(String email, UUID productId) {
 		Optional<Product> optionalProduct = getProduct(email, productId);
 
 		if (optionalProduct.isEmpty()) {
@@ -105,7 +106,7 @@ public class ProductService {
 		return productDTO;
 	}
 
-	public ProductDTO updateProduct(String email, Integer productId, ProductDTO productDTO) {
+	public ProductDTO updateProduct(String email, UUID productId, ProductDTO productDTO) {
 		Optional<Product> optionalProduct = getProduct(email, productId);
 
 		if (optionalProduct.isEmpty()) {
@@ -140,7 +141,7 @@ public class ProductService {
 		return savedProductDTO;
 	}
 
-	public Boolean deleteProduct(String email, Integer productId) {
+	public Boolean deleteProduct(String email, UUID productId) {
 		Optional<Product> optionalProduct = getProduct(email, productId);
 
 		if (optionalProduct.isEmpty()) {
@@ -165,7 +166,7 @@ public class ProductService {
 		return productDTOList;
 	}
 
-	public ProductOptionDTO addProductOptions(String email, Integer productId, ProductOptionDTO productOptionDTO) {
+	public ProductOptionDTO addProductOptions(String email, UUID productId, ProductOptionDTO productOptionDTO) {
 		Optional<Product> optionalProduct = getProduct(email, productId);
 
 		if (optionalProduct.isEmpty()) {
@@ -195,7 +196,7 @@ public class ProductService {
 		return new ProductOptionDTO(productOption);
 	}
 
-	public Boolean updateProductOption(String email, Integer productId, Integer productOptionId,
+	public Boolean updateProductOption(String email, UUID productId, UUID productOptionId,
 			ProductOptionDTO productOptionDTO) {
 		Optional<Product> optionalProduct = getProduct(email, productId);
 
@@ -243,7 +244,7 @@ public class ProductService {
 		return true;
 	}
 
-	public void deleteProductOption(String email, Integer productId, Integer productOptionId) {
+	public void deleteProductOption(String email, UUID productId, UUID productOptionId) {
 		Optional<Product> optionalProduct = getProduct(email, productId);
 
 		Product product = optionalProduct.get();
@@ -256,7 +257,7 @@ public class ProductService {
 		}
 	}
 
-	public void addProductVariant(String email, Integer productId, ProductVariantDTO productVariantDTO) {
+	public void addProductVariant(String email, UUID productId, ProductVariantDTO productVariantDTO) {
 		Optional<Product> optionalProduct = getProduct(email, productId);
 		Product product = optionalProduct.get();
 		ProductVariant productVariant = new ProductVariant(productVariantDTO);
@@ -286,13 +287,13 @@ public class ProductService {
 		}
 	}
 
-	public void updateProductVariant(String email, Integer productId, Integer productVariantId,
+	public void updateProductVariant(String email, UUID productId, UUID productVariantId,
 			ProductVariantDTO productVariantDTO) {
 		deleteProductVariant(email, productId, productVariantId);
 		addProductVariant(email, productId, productVariantDTO);
 	}
 
-	public void deleteProductVariant(String email, Integer productId, Integer productVariantId) {
+	public void deleteProductVariant(String email, UUID productId, UUID productVariantId) {
 		Optional<Product> optionalProduct = getProduct(email, productId);
 
 		if (optionalProduct.isEmpty()) {

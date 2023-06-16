@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,7 +40,7 @@ public class CategoryService {
 		return new CategoryDTO(category);
 	}
 
-	public CategoryDTO updateCategory(String email, int categoryId, CategoryDTO categoryDTO) {
+	public CategoryDTO updateCategory(String email, UUID categoryId, CategoryDTO categoryDTO) {
 		User user = userRepository.findByEmail(email).get();
 		Business business = user.getBusiness();
 		Optional<Category> optionalCategory = categoryRepository.findByBusinessAndCategory(business.getId(),
@@ -59,7 +60,7 @@ public class CategoryService {
 		return new CategoryDTO(category);
 	}
 
-	public CategoryDTO getCategoryDetails(String email, int categoryId) {
+	public CategoryDTO getCategoryDetails(String email, UUID categoryId) {
 		User user = userRepository.findByEmail(email).get();
 		Business business = user.getBusiness();
 		Optional<Category> optionalCategory = categoryRepository.findByBusinessAndCategory(business.getId(),
@@ -86,7 +87,7 @@ public class CategoryService {
 		return categoryDTOList;
 	}
 
-	public void deleteCategory(String email, Integer categoryId) {
+	public void deleteCategory(String email, UUID categoryId) {
 		User user = userRepository.findByEmail(email).get();
 		Business business = user.getBusiness();
 		Optional<Category> optionalCategory = categoryRepository.findByBusinessAndCategory(business.getId(),

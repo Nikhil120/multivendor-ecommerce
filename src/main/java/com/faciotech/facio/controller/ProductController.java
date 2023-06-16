@@ -2,6 +2,7 @@ package com.faciotech.facio.controller;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +36,7 @@ public class ProductController {
 	}
 
 	@GetMapping("/{product_id}")
-	public ResponseEntity<ProductDTO> getProductDetails(@PathVariable("product_id") Integer productId) {
+	public ResponseEntity<ProductDTO> getProductDetails(@PathVariable("product_id") UUID productId) {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 		ProductDTO productDTO = productService.getProductDetails(email, productId);
 
@@ -47,7 +48,7 @@ public class ProductController {
 	}
 
 	@PostMapping("/{product_id}")
-	public ResponseEntity<ProductDTO> updateProduct(@PathVariable("product_id") Integer productId,
+	public ResponseEntity<ProductDTO> updateProduct(@PathVariable("product_id") UUID productId,
 			@RequestBody ProductDTO productDTO) {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 		productService.updateProduct(email, productId, productDTO);
@@ -55,7 +56,7 @@ public class ProductController {
 	}
 
 	@DeleteMapping("/{product_id}")
-	public ResponseEntity<String> deleteProduct(@PathVariable("product_id") Integer productId) {
+	public ResponseEntity<String> deleteProduct(@PathVariable("product_id") UUID productId) {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 		productService.deleteProduct(email, productId);
 		return ResponseEntity.ok("Product deleted successfully.");
@@ -72,7 +73,7 @@ public class ProductController {
 	}
 
 	@PostMapping("{product_id}/options")
-	public ResponseEntity<String> addProductOption(@PathVariable("product_id") Integer productId,
+	public ResponseEntity<String> addProductOption(@PathVariable("product_id") UUID productId,
 			@RequestBody ProductOptionDTO productOptionDTO) {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 		productService.addProductOptions(email, productId, productOptionDTO);
@@ -80,23 +81,23 @@ public class ProductController {
 	}
 
 	@PostMapping("{product_id}/options/{option_id}")
-	public ResponseEntity<String> updateProductOption(@PathVariable("product_id") Integer productId,
-			@PathVariable("option_id") Integer optionId, @RequestBody ProductOptionDTO productOptionDTO) {
+	public ResponseEntity<String> updateProductOption(@PathVariable("product_id") UUID productId,
+			@PathVariable("option_id") UUID optionId, @RequestBody ProductOptionDTO productOptionDTO) {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 		productService.updateProductOption(email, productId, optionId, productOptionDTO);
 		return ResponseEntity.ok("Product option updated successfully.");
 	}
 
 	@DeleteMapping("{product_id}/options/{option_id}")
-	public ResponseEntity<String> deleteProductOption(@PathVariable("product_id") Integer productId,
-			@PathVariable("option_id") Integer optionId) {
+	public ResponseEntity<String> deleteProductOption(@PathVariable("product_id") UUID productId,
+			@PathVariable("option_id") UUID optionId) {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 		productService.deleteProductOption(email, productId, optionId);
 		return ResponseEntity.ok("Product option deleted successfully.");
 	}
 
 	@PostMapping("{product_id}/variants")
-	public ResponseEntity<String> addProductVariant(@PathVariable("product_id") Integer productId,
+	public ResponseEntity<String> addProductVariant(@PathVariable("product_id") UUID productId,
 			@RequestBody ProductVariantDTO productVariantDTO) {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 		productService.addProductVariant(email, productId, productVariantDTO);
@@ -104,16 +105,16 @@ public class ProductController {
 	}
 
 	@PostMapping("{product_id}/variants/{variant_id}")
-	public ResponseEntity<String> updateProductVariant(@PathVariable("product_id") Integer productId,
-			@PathVariable("variant_id") Integer variantId, @RequestBody ProductVariantDTO productVariantDTO) {
+	public ResponseEntity<String> updateProductVariant(@PathVariable("product_id") UUID productId,
+			@PathVariable("variant_id") UUID variantId, @RequestBody ProductVariantDTO productVariantDTO) {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 		productService.updateProductVariant(email, productId, variantId, productVariantDTO);
 		return ResponseEntity.ok("Product variant updated successfully.");
 	}
 
 	@DeleteMapping("{product_id}/variants/{variant_id}")
-	public ResponseEntity<String> deleteProductVariant(@PathVariable("product_id") Integer productId,
-			@PathVariable("variant_id") Integer variantId) {
+	public ResponseEntity<String> deleteProductVariant(@PathVariable("product_id") UUID productId,
+			@PathVariable("variant_id") UUID variantId) {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 		productService.deleteProductVariant(email, productId, variantId);
 		return ResponseEntity.ok("Product variant deleted successfully.");

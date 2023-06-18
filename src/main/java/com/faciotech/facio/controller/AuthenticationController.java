@@ -19,6 +19,7 @@ import com.faciotech.facio.dto.AuthenticationResponseDTO;
 import com.faciotech.facio.dto.UserDTO;
 import com.faciotech.facio.service.AuthenticationService;
 import com.faciotech.facio.service.BusinessService;
+import com.faciotech.facio.util.Utility;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -30,19 +31,21 @@ public class AuthenticationController {
 
 	private final AuthenticationService authenticationService;
 	private final BusinessService businessService;
-	private String siteURL = "http://localhost:8080/api/v1/auth";
 
 	@PostMapping("/register")
-	public ResponseEntity<String> register(@RequestBody UserDTO request)
+	public ResponseEntity<String> register(HttpServletRequest httpServletRequest, @RequestBody UserDTO request)
 			throws UnsupportedEncodingException, MessagingException {
+		String siteURL = Utility.getSiteURL(httpServletRequest);
 		String responseMessage = authenticationService.register(request, siteURL);
 
 		return ResponseEntity.ok(responseMessage);
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<Object> authenticate(@RequestBody AuthenticationRequestDTO request) {
+	public ResponseEntity<Object> authenticate(HttpServletRequest httpServletRequest,
+			@RequestBody AuthenticationRequestDTO request) {
 		ResponseEntity<Object> responseEntity;
+		String siteURL = Utility.getSiteURL(httpServletRequest);
 		try {
 			AuthenticationResponseDTO authenticationResponseDTO = authenticationService.authenticate(request, siteURL);
 			if (authenticationResponseDTO == null) {

@@ -137,7 +137,7 @@ public class AuthenticationService {
 				+ "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>" + "Thank you,<br>" + "My company name.";
 
 		content = content.replace("[[name]]", user.getFullName());
-		String verifyURL = siteURL + "/verify?email=" + user.getEmail() + "&code=" + user.getVerificationCode();
+		String verifyURL = siteURL + "/api/v1/auth/verify?email=" + user.getEmail() + "&code=" + user.getVerificationCode();
 
 		content = content.replace("[[URL]]", verifyURL);
 
